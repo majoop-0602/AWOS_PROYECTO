@@ -45,6 +45,7 @@ $con = new Conexion(array(
   "contrasena" => "u7?Jpkt>Y*E7"
 ));
 
+if (isset($_GET))
 
 
 ?>
