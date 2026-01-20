@@ -45,7 +45,44 @@ $con = new Conexion(array(
   "contrasena" => "u7?Jpkt>Y*E7"
 ));
 
-if (isset($_GET))
+if (isset($_GET ["agre_pagos"])) {
+  $insert = $con->insert("pagos","id_pedido, monto, estado_pago, referencia_paypal");
+  $insert->values($_POST["id_pedido"]);
+  $insert->values($_POST["txtMonto"]);
+  $insert->values($_POST["cboEstadoPago"]);
+  $insert->values($_POST["txtReferenciaPaypal"]);
+  $insert->execute();
+
+  $id = $con->lastInsertId();
+
+  if (is_numeric($id)) {
+    echo $id;
+  } else {
+    echo "0";
+  }
+}
+
+elseif (isset($_GET ["pagos"])) {
+  $select = $con->select("pagos","id_pago, id_pedido, monto, estado_pago, fecha_pago, DATE_FORMAT(pagos.fecha_pago, '%Y') AS year, DATE_FORMAT(pagos.fecha_pago, '%m') AS mes,
+   DATE_FORMAT(pagos.fecha_pago, '%d') AS day, referencia_paypal");
+  $select->orderBy("id_pago","DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+ 
+}
+
+elseif (isset($_GET ["obt_id_pedido"])) {
+  $select = $con->select("detalle_pedido", "detalle_pedido.id_pedido, productos.titulo, pedidos.total");
+  $select->innerjoin("peoductos USING (id_producto)");
+  $select->innerjoin("pedidos USING (id_pedido)");
+   $select->orderby("detalle_pedido.id_pedido DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
 
 
 ?>
