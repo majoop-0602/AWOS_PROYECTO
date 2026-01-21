@@ -88,6 +88,31 @@ elseif (isset($_GET ["obt_id_pedido"])) {
   echo json_encode($select->execute());
 }
 
+/////
+elseif (isset($_GET["pedidos"])) {
+  $select = $con->select("pedidos", "id_pedido, id_comprador, fecha_pedido, total, estado");
+  $select->orderby("id_pedido DESC");
 
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+
+elseif (isset($_GET["editarPedido"])) {
+  $select = $con->select("pedidos", "*");
+  $select->where("id_pedido", "=", $_GET["id"]);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+
+elseif (isset($_GET["modificarPedido"])) {
+  $update = $con->update("pedidos");
+  $update->set("id_comprador", $_POST["txtComprador"]);
+  $update->set("total", $_POST["txtTotal"]);
+  $update->set("estado", $_POST["cboEstado"]);
+  $update->where("id_pedido", "=", $_POST["txtId"]);
+
+  echo $update->execute() ? "correcto" : "error";
+}
 
 ?>

@@ -1,3 +1,4 @@
+///////PAGOS
 function buscarPagos(){
     $.get("servicio.php?pagos", function (pagos){
     $("#tbodyPagos").html("")
@@ -46,6 +47,9 @@ function cargarPedidos(){
 
 }
 
+
+
+
 cargarPedidos()
 buscarPagos()
 
@@ -67,4 +71,57 @@ $(document).on("click", ".btn-pagar", function (event) {
     const id = ($(this).data("id"))
 
     $("#txtid_pedido").val(id);
+})
+
+///////////
+
+function buscarPedidos() {
+    $.get("servicio.php?pedidos", function (pedidos) {
+        $("#tbodyPedidos").html("")
+
+        for (let x in pedidos) {
+            const p = pedidos[x]
+
+            $("#tbodyPedidos").append(`
+            <tr>
+                <td>${p.id_pedido}</td>
+                <td>${p.id_comprador}</td>
+                <td>${p.fecha_pedido}</td>
+                <td>${p.total}</td>
+                <td>${p.estado}</td>
+                <td>
+                    <button class="btn btn-info btn-editar" data-id="${p.id_pedido}">
+                        Modificar
+                    </button>
+                </td>
+            </tr>`)
+        }
+    })
+}
+
+buscarPedidos()
+
+$("#frmPedido").submit(function (e) {
+    e.preventDefault()
+
+    $.post("servicio.php?modificarPedido", $(this).serialize(), function (r) {
+        if (r == "correcto") {
+            alert("Pedido modificado correctamente")
+            $("#frmPedido").get(0).reset()
+            buscarPedidos()
+        }
+    })
+})
+
+$(document).on("click", ".btn-editar", function () {
+    const id = $(this).data("id")
+
+    $.get("servicio.php?editarPedido", { id }, function (pedido) {
+        const p = pedido[0]
+
+        $("#txtId").val(p.id_pedido)
+        $("#txtComprador").val(p.id_comprador)
+        $("#txtTotal").val(p.total)
+        $("#cboEstado").val(p.estado)
+    })
 })
