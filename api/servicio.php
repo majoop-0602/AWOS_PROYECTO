@@ -1,5 +1,6 @@
 <?php
 
+
 ini_set("display_errors", 1);
 ini_set("display_startup_errors", 1);
 error_reporting(E_ALL & ~E_DEPRECATED);
@@ -47,24 +48,27 @@ $con = new Conexion(array(
 
 if (isset($_GET ["agre_pagos"])) {
   $insert = $con->insert("pagos","id_pedido, monto, estado_pago, referencia_paypal");
-  $insert->values($_POST["id_pedido"]);
-  $insert->values($_POST["txtMonto"]);
-  $insert->values($_POST["cboEstadoPago"]);
-  $insert->values($_POST["txtReferenciaPaypal"]);
+  $insert->value($_POST["txtid_pedido"]);
+  $insert->value($_POST["txtMonto"]);
+  $insert->value($_POST["cboEstadoPago"]);
+  $insert->value($_POST["txtReferenciaPaypal"]);
   $insert->execute();
 
+  
   $id = $con->lastInsertId();
 
   if (is_numeric($id)) {
     echo $id;
-  } else {
+    } else {
     echo "0";
-  }
+   }
 }
 
 elseif (isset($_GET ["pagos"])) {
-  $select = $con->select("pagos","id_pago, id_pedido, monto, estado_pago, fecha_pago, DATE_FORMAT(pagos.fecha_pago, '%Y') AS year, DATE_FORMAT(pagos.fecha_pago, '%m') AS mes,
-   DATE_FORMAT(pagos.fecha_pago, '%d') AS day, referencia_paypal");
+  $select = $con->select("pagos","id_pago, detalle_pedido.id_pedido AS pedido, productos.titulo AS productonombre, monto, estado_pago, fecha_pago, DATE_FORMAT(pagos.fecha_pago, '%Y') AS year, DATE_FORMAT(pagos.fecha_pago, '%m') AS mes,
+  DATE_FORMAT(pagos.fecha_pago, '%d') AS day, referencia_paypal");
+  $select->innerjoin("detalle_pedido USING (id_pedido)");
+  $select->innerjoin("productos USING (id_producto)");
   $select->orderBy("id_pago","DESC");
   $select->limit(10);
 
@@ -74,15 +78,16 @@ elseif (isset($_GET ["pagos"])) {
 }
 
 elseif (isset($_GET ["obt_id_pedido"])) {
-  $select = $con->select("detalle_pedido", "detalle_pedido.id_pedido, productos.titulo, pedidos.total");
-  $select->innerjoin("peoductos USING (id_producto)");
+  $select = $con->select("detalle_pedido", "detalle_pedido.id_pedido, productos.titulo AS nombre, pedidos.total AS total");
+  $select->innerjoin("productos USING (id_producto)");
   $select->innerjoin("pedidos USING (id_pedido)");
-   $select->orderby("detalle_pedido.id_pedido DESC");
+   $select->orderby("detalle_pedido.id_pedido","DESC");
   $select->limit(10);
 
   header("Content-Type: application/json");
   echo json_encode($select->execute());
 }
+
 
 
 ?>
