@@ -307,7 +307,7 @@ $("#frmDetalle").submit(function (event) {
     if ($("#txtid_detalle").val()) {
         $.post("servicio.php?modificardetalle_pedido", $(this).serialize(), function (respuesta) {
             if (respuesta == "correcto") {
-                alert("Producto modificado correctamente")
+                alert("Detalle modificado correctamente")
                 $("#frmDetalle").get(0).reset()
                 buscardetalle_pedido()
             }
@@ -317,7 +317,7 @@ $("#frmDetalle").submit(function (event) {
 
     $.post("servicio.php?agregardetalle_pedido", $(this).serialize(), function (respuesta) {
         if (respuesta != "0") {
-            alert("Producto agregado correctamente")
+            alert("Detalle agregado correctamente")
             $("#frmDetalle").get(0).reset()
             buscardetalle_pedido()
         }
@@ -337,3 +337,57 @@ $(document).on("click", ".btn-editar", function () {
     })
 })
 
+
+/////////USUARIOS
+function buscarUsuarios() {
+    $.get("servicio.php?usuarios", function (usuarios) {
+        $("#tbodyUsuarios").html("")
+    
+        for (let x in usuarios) {
+            const usuario = usuarios[x]
+    
+            $("#tbodyUsuarios").append(`<tr>
+                <td>${usuario.id_usuario}</td>
+                <td>${usuario.nombre}</td>
+                <td>${usuario.email}</td>
+                <td>${usuario.telefono}</td>
+                <td>${usuario.contrasena}</td>
+                <td>${usuario.fecha_registro}</td>
+                <td>
+                    <button class="btn btn-danger btn-eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
+                </td>
+            </tr>`)
+        }
+    })
+}
+
+buscarUsuarios()
+
+$("#frmUsuario").submit(function (event) {
+    event.preventDefault()
+
+    $.post("servicio.php?agregarUsuario", $(this).serialize(), function (respuesta) {
+        if (respuesta != "0") {
+            alert("Usuario agregado correctamente")
+            $("#frmUsuario").get(0).reset()
+            buscarUsuarios()
+        }
+    })
+})
+
+$(document).on("click", ".btn-eliminar", function (event) {
+    const id = $(this).data("id")
+
+    if (!confirm("Deseas eliminar este Usuario?")) {
+        return
+    }
+
+    $.post("servicio.php?eliminarUsuario", {
+        txtIdUsuario: id
+    }, function (respuesta) {
+        if (respuesta == "correcto") {
+            alert("Usuario eliminado correctamente")
+            buscarUsuarios()
+        }
+    })
+})

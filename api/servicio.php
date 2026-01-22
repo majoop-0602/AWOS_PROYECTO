@@ -307,5 +307,39 @@ elseif(isset($_GET["modificardetalle_pedido"])) {
 
 
 /////USUARIOS
+elseif (isset($_GET["usuarios"])) {
+  $select = $con->select("usuarios", "id_usuario, nombre, email, telefono, contrasena, foto_perfil, fecha_registro");
+  $select->orderby("id_usuario DESC");
 
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+elseif (isset($_GET["eliminarUsuario"])) {
+  $delete = $con->delete("usuarios");
+  $delete->where("id_usuario", "=", $_POST["txtIdUsuario"]);
+
+  if ($delete->execute()) {
+    echo "correcto";
+  }
+  else {
+    echo "error";
+  }
+}
+elseif (isset($_GET["agregarUsuario"])) {
+  $insert = $con->insert("usuarios", "nombre, email, telefono, contrasena");
+  $insert->value($_POST["txtNombre"]);
+  $insert->value($_POST["txtEmail"]);
+  $insert->value($_POST["txtTelefono"]);
+  $insert->value($_POST["txtContrasena"]);
+  $insert->execute();
+
+  $id = $con->lastInsertId();
+
+  if (is_numeric($id)) {
+    echo $id;
+  }
+  else {
+    echo "0";
+  }
+}
 ?>
