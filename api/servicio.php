@@ -217,4 +217,95 @@ elseif (isset($_GET["vendedorCombo"])) {
     header("Content-Type: application/json");
     echo json_encode($array);
 }
+
+
+/////DETALLE PEDIDO
+elseif(isset($_GET["detalle_pedido"])) {
+  $select = $con->select("detalle_pedido","id_detalle, id_pedido, id_producto, productos.titulo AS productonombre, cantidad, precio_unitario");
+  $select->innerjoin("productos USING (id_producto)");
+  $select->orderby("id_detalle","DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+elseif(isset($_GET["agregardetalle_pedido"])) {
+  $insert = $con->insert("detalle_pedido","id_pedido, id_producto, cantidad, precio_unitario");
+  $insert->value($_POST["cboPedido"]);
+  $insert->value($_POST["cboProducto"]);
+  $insert->value($_POST["txtcantidad"]);
+  $insert->value($_POST["txtprecio_unitario"]);
+  $insert->execute();
+
+  $id = $con->lastInsertId();
+
+  if (is_numeric($id)) {
+    echo $id;
+    } else {
+    echo "0";
+   }
+
+}
+elseif (isset($_GET["PeCombo"])) {
+    $select = $con->select("pedidos", "id_pedido AS value, id_pedido AS label");
+    $select->orderby("id_pedido ASC");
+    $select->limit(10);
+
+    $array = array(
+        array("value" => "", "label" => "Selecciona una opción")
+    );
+
+    foreach ($select->execute() as $pe) {
+        $array[] = array(
+            "value" => $pe["value"],
+            "label" => $pe["label"]
+        );
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+}
+elseif (isset($_GET["ProCombo"])) {
+    $select = $con->select("productos", "id_producto AS value, titulo AS label");
+    $select->orderby("titulo ASC");
+    $select->limit(10);
+
+    $array = array(
+        array("value" => "", "label" => "Selecciona una opción")
+    );
+
+    foreach ($select->execute() as $pro) {
+        $array[] = array(
+            "value" => $pro["value"],
+            "label" => $pro["label"]
+        );
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+}
+elseif(isset($_GET["editardetalle_pedido"])) {
+  $select = $con->select("detalle_pedido", "*");
+  $select->where("id_detalle", "=", $_GET["id"]);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+
+}
+elseif(isset($_GET["modificardetalle_pedido"])) {
+  $update = $con->update("detalle_pedido");
+  $update->set("id_pedido", $_POST["cboPedido"]);
+  $update->set("id_producto", $_POST["cboProducto"]);
+  $update->set("cantidad", $_POST["txtcantidad"]);
+   $update->set("precio_unitario", $_POST["txtprecio_unitario"]);
+  $update->where("id_detalle", "=", $_POST["txtid_detalle"]);
+
+  echo $update->execute() ? "correcto" : "error";
+
+}
+
+
+
+/////USUARIOS
+
 ?>

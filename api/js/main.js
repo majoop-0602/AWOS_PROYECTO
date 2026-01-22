@@ -249,3 +249,91 @@ $(document).on("click", ".btn-eliminar", function (event) {
         }
     })
 })
+
+
+///////////DETALLE_PEDIDO
+function buscardetalle_pedido() {
+    $.get("servicio.php?detalle_pedido", function (detalles){
+    $("#tbodyDetalle").html("")
+
+    for(let x in detalles){
+        const detalle = detalles[x]
+
+        $("#tbodyDetalle").append(` 
+                 <tr>
+                    <td>${detalle.id_detalle}</td>
+                    <td>${detalle.id_pedido}</td>
+                    <td>${detalle.id_producto}</td>
+                    <td>${detalle.productonombre}</td>
+                    <td>${detalle.cantidad}</td>
+                    <td>${detalle.precio_unitario}</td>
+                 <td>
+                    <button class="btn btn-info btn-editar" data-id="${detalle.id_detalle}">
+                        Modificar
+                    </button>
+                </td>
+            </tr>
+            `)   
+    }
+    })
+
+}
+buscardetalle_pedido()
+$.get("servicio.php?PeCombo", function (pediditos) {
+    $("#cboPedido").html("")
+
+    for (let x in pediditos) {
+        const pedidito = pediditos[x]
+
+        $("#cboPedido").append(`<option value="${pedidito.value}">
+            ${pedidito.label}
+        </option>`)
+    }
+})
+$.get("servicio.php?ProCombo", function (productitos) {
+    $("#cboProducto").html("")
+
+    for (let x in productitos) {
+        const productito = productitos[x]
+
+        $("#cboProducto").append(`<option value="${productito.value}">
+            ${productito.label}
+        </option>`)
+    }
+})
+$("#frmDetalle").submit(function (event) {
+    event.preventDefault()
+
+    if ($("#txtid_detalle").val()) {
+        $.post("servicio.php?modificardetalle_pedido", $(this).serialize(), function (respuesta) {
+            if (respuesta == "correcto") {
+                alert("Producto modificado correctamente")
+                $("#frmDetalle").get(0).reset()
+                buscardetalle_pedido()
+            }
+        })
+        return
+    }
+
+    $.post("servicio.php?agregardetalle_pedido", $(this).serialize(), function (respuesta) {
+        if (respuesta != "0") {
+            alert("Producto agregado correctamente")
+            $("#frmDetalle").get(0).reset()
+            buscardetalle_pedido()
+        }
+    })
+})
+$(document).on("click", ".btn-editar", function () {
+    const id = $(this).data("id")
+
+    $.get("servicio.php?editardetalle_pedido", { id }, function (detallito) {
+        const de = detallito[0]
+
+        $("#txtid_detalle").val(de.id_detalle)
+        $("#cboPedido").val(de.id_pedido)
+        $("#cboProducto").val(de.id_producto)
+        $("#txtcantidad").val(de.cantidad)
+        $("#txtprecio_unitario").val(de.precio_unitario)
+    })
+})
+
