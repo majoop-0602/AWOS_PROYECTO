@@ -138,3 +138,114 @@ $(document).on("click", ".btn-editar", function () {
         $("#cboEstado").val(p.estado)
     })
 })
+
+///////////PRODUCTOS
+function buscarProductos() {
+    $.get("servicio.php?productos", function (productos) {
+        $("#tbodyProductos").html("")
+    
+        for (let x in productos) {
+            const producto = productos[x]
+    
+            $("#tbodyProductos").append(`<tr>
+                <td>${producto.id}</td>
+                <td>${producto.titulo}</td>
+                <td>${producto.descripcion}</td>
+                <td>${producto.precio}</td>
+                <td>${producto.talla}</td>
+                <td>${producto.estado}</td>
+                <td>${producto.id_categoria}</td>
+                <td>${producto.id_vendedor}</td>
+                <td>${producto.disponible}</td>
+                <td>
+                    <button class="btn btn-danger btn-eliminar" data-id="${producto.id}">Eliminar</button>
+                </td>
+            </tr>`)
+        }
+    })
+}
+
+buscarProductos()
+
+$.get("servicio.php?categoriasCombo", function (categorias) {
+    $("#cboIdCat").html("")
+
+    for (let x in categorias) {
+        const categoria = categorias[x]
+
+        $("#cboIdCat").append(`<option value="${categoria.value}">
+            ${categoria.label}
+        </option>`)
+    }
+})
+$.get("servicio.php?vendedorCombo", function (vendedores) {
+    $("#cboIdVendedor").html("")
+
+    for (let x in vendedores) {
+        const vendedor = vendedores[x]
+
+        $("#cboIdVendedor").append(`<option value="${vendedor.value}">
+            ${vendedor.label}
+        </option>`)
+    }
+})
+
+$("#frmProducto").submit(function (event) {
+    event.preventDefault()
+
+    if ($("#txtId").val()) {
+        $.post("servicio.php?modificarProducto", $(this).serialize(), function (respuesta) {
+            if (respuesta == "correcto") {
+                alert("Producto modificado correctamente")
+                $("#frmProducto").get(0).reset()
+                buscarProductos()
+            }
+        })
+        return
+    }
+
+    $.post("servicio.php?agregarProducto", $(this).serialize(), function (respuesta) {
+        if (respuesta != "0") {
+            alert("Producto agregado correctamente")
+            $("#frmProducto").get(0).reset()
+            buscarProductos()
+        }
+    })
+})
+
+$(document).on("click", ".btn-editar", function (event) {
+    const id = $(this).data("id")
+
+    $.get("servicio.php?editarProducto", {
+        id: id
+    }, function (productos) {
+        const producto = productos[0]
+
+        $("#txtId").val(producto.id)
+        $("#txtTitulo").val(producto.titulo)
+        $("#txtDescripcion").val(producto.descripcion)
+        $("#txtPrecio").val(producto.precio)
+        $("#txtTalla").val(producto.talla)
+        $("#txtEstado").val(producto.estado)
+        $("#txtIdCat").val(producto.id_categoria)
+        $("#txtIdVendedor").val(producto.id_vendedor)
+        $("#txtDisponible").val(producto.disponible)
+    })
+})
+
+$(document).on("click", ".btn-eliminar", function (event) {
+    const id = $(this).data("id")
+
+    if (!confirm("Deseas eliminar este producto?")) {
+        return
+    }
+
+    $.post("servicio.php?eliminarProducto", {
+        txtId: id
+    }, function (respuesta) {
+        if (respuesta == "correcto") {
+            alert("Producto eliminado correctamente")
+            buscarProductos()
+        }
+    })
+})

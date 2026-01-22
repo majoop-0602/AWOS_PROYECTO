@@ -136,4 +136,85 @@ elseif (isset($_GET["modificarPedido"])) {
   echo $update->execute() ? "correcto" : "error";
 }
 
+///// PRODUCTOS
+elseif (isset($_GET["productos"])) {
+  $select = $con->select("productos", "productos.id_producto AS id, productos.titulo AS titulo, productos.descripcion As descripcion, productos.precio As precio, productos.talla As talla, productos.estado As estado, categorias.id_categoria AS id_categoria, usuarios.id_usuario AS id_vendedor, DATE_FORMAT(productos.fecha_publicacion, '%Y') AS year, DATE_FORMAT(productos.fecha_publicacion, '%m') AS mes, DATE_FORMAT(productos.fecha_publicacion, '%d') AS day, disponible");
+  $select->innerjoin("categorias ON categorias.id_categoria = productos.id_categoria");
+  $select->innerjoin("usuarios ON usuarios.id_usuario = productos.id_vendedor");
+  $select->orderby("productos.id_producto DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+elseif (isset($_GET["eliminarProducto"])) {
+  $delete = $con->delete("productos");
+  $delete->where("id_producto", "=", $_POST["txtId"]);
+
+  if ($delete->execute()) {
+    echo "correcto";
+  }
+  else {
+    echo "error";
+  }
+}
+elseif (isset($_GET["agregarProducto"])) {
+  $insert = $con->insert("productos", "titulo, descripcion, precio, talla, estado, id_categoria, id_vendedor, disponible");
+  $insert->value($_POST["txtTitulo"]);
+  $insert->value($_POST["txtDescripcion"]);
+  $insert->value($_POST["txtPrecio"]);
+  $insert->value($_POST["txtTalla"]);
+  $insert->value($_POST["cboEstado"]);
+  $insert->value($_POST["cboIdCat"]);
+  $insert->value($_POST["cboIdVendedor"]);
+  $insert->value($_POST["cboDisponible"]);
+  $insert->execute();
+
+  $id = $con->lastInsertId();
+
+  if (is_numeric($id)) {
+    echo $id;
+  }
+  else {
+    echo "0";
+  }
+}
+elseif (isset($_GET["categoriasCombo"])) {
+    $select = $con->select("categorias", "id_categoria AS value, nombre_categoria AS label");
+    $select->orderby("nombre_categoria ASC");
+    $select->limit(10);
+
+    $array = array(
+        array("value" => "", "label" => "Selecciona una opción")
+    );
+
+    foreach ($select->execute() as $categoria) {
+        $array[] = array(
+            "value" => $categoria["value"],
+            "label" => $categoria["label"]
+        );
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+}
+elseif (isset($_GET["vendedorCombo"])) {
+    $select = $con->select("usuarios", "id_usuario AS value, nombre AS label");
+    $select->orderby("nombre ASC");
+    $select->limit(10);
+
+    $array = array(
+        array("value" => "", "label" => "Selecciona una opción")
+    );
+
+    foreach ($select->execute() as $vendedor) {
+        $array[] = array(
+            "value" => $vendedor["value"],
+            "label" => $vendedor["label"]
+        );
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
+}
 ?>
