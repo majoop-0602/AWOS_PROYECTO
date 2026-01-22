@@ -73,7 +73,7 @@ $(document).on("click", ".btn-pagar", function (event) {
     $("#txtid_pedido").val(id);
 })
 
-///////////
+///////////PEDIDOS
 
 function buscarPedidos() {
     $.get("servicio.php?pedidos", function (pedidos) {
@@ -101,6 +101,19 @@ function buscarPedidos() {
 
 buscarPedidos()
 
+$.get("servicio.php?pedidosCombo", function (compradores) {
+    $("#cboComprador").html("")
+
+    for (let x in compradores) {
+        const comprador = compradores[x]
+
+        $("#cboComprador").append(`<option value="${comprador.value}">
+            ${comprador.label}
+        </option>`)
+    }
+})
+
+
 $("#frmPedido").submit(function (e) {
     e.preventDefault()
 
@@ -120,7 +133,7 @@ $(document).on("click", ".btn-editar", function () {
         const p = pedido[0]
 
         $("#txtId").val(p.id_pedido)
-        $("#txtComprador").val(p.id_comprador)
+        $("#cboComprador").val(p.id_comprador)
         $("#txtTotal").val(p.total)
         $("#cboEstado").val(p.estado)
     })

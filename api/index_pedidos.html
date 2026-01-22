@@ -18,14 +18,16 @@
     <form id="frmPedido" method="POST">
 
         <div class="mb-1">
-            <label for="txtId">Id:</label>
+            <label for="txtId">ID:</label>
             <input type="text" id="txtId" name="txtId" class="form-control" readonly>
         </div>
 
         <div class="mb-1">
-            <label for="txtComprador">Comprador:</label>
-            <input type="text" id="txtComprador" name="txtComprador" class="form-control">
-        </div>
+                <label for="cboComprador">Comprador:</label>
+                <select type="text" id="cboComprador" name="cboComprador" class="form-select">
+                    <option value="">Selecciona una opción</option>
+                </select>
+            </div>
 
         <div class="mb-1">
             <label for="txtTotal">Total:</label>
@@ -35,7 +37,6 @@
         <div class="mb-1">
             <label for="cboEstado">Estado:</label>
             <select id="cboEstado" name="cboEstado" class="form-select">
-                <option value="">Selecciona una opción</option>
                 <option value="Pendiente">Pendiente</option>
                 <option value="Pagado">Pagado</option>
                 <option value="Cancelado">Cancelado</option>

@@ -46,6 +46,7 @@ $con = new Conexion(array(
   "contrasena" => "u7?Jpkt>Y*E7"
 ));
 
+///// PAGOS
 if (isset($_GET ["agre_pagos"])) {
   $insert = $con->insert("pagos","id_pedido, monto, estado_pago, referencia_paypal");
   $insert->value($_POST["txtid_pedido"]);
@@ -88,13 +89,32 @@ elseif (isset($_GET ["obt_id_pedido"])) {
   echo json_encode($select->execute());
 }
 
-/////
+///// PEDIDOS
 elseif (isset($_GET["pedidos"])) {
   $select = $con->select("pedidos", "id_pedido, id_comprador, fecha_pedido, total, estado");
   $select->orderby("id_pedido DESC");
 
   header("Content-Type: application/json");
   echo json_encode($select->execute());
+}
+elseif (isset($_GET["pedidosCombo"])) {
+    $select = $con->select("usuarios", "id_usuario AS value, nombre AS label");
+    $select->orderby("nombre ASC");
+    $select->limit(10);
+
+    $array = array(
+        array("value" => "", "label" => "Selecciona una opción")
+    );
+
+    foreach ($select->execute() as $comprador) {
+        $array[] = array(
+            "value" => $comprador["value"],
+            "label" => $comprador["label"]
+        );
+    }
+
+    header("Content-Type: application/json");
+    echo json_encode($array);
 }
 
 elseif (isset($_GET["editarPedido"])) {
@@ -105,9 +125,10 @@ elseif (isset($_GET["editarPedido"])) {
   echo json_encode($select->execute());
 }
 
+
 elseif (isset($_GET["modificarPedido"])) {
   $update = $con->update("pedidos");
-  $update->set("id_comprador", $_POST["txtComprador"]);
+  $update->set("id_comprador", $_POST["cboComprador"]);
   $update->set("total", $_POST["txtTotal"]);
   $update->set("estado", $_POST["cboEstado"]);
   $update->where("id_pedido", "=", $_POST["txtId"]);
