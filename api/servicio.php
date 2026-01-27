@@ -66,7 +66,8 @@ if (isset($_GET ["agre_pagos"])) {
 }
 
 elseif (isset($_GET ["pagos"])) {
-  $select = $con->select("pagos","id_pago, detalle_pedido.id_pedido AS pedido, productos.titulo AS productonombre, monto, estado_pago, fecha_pago, DATE_FORMAT(pagos.fecha_pago, '%Y') AS year, DATE_FORMAT(pagos.fecha_pago, '%m') AS mes,
+  $select = $con->select("pagos","id_pago, detalle_pedido.id_pedido AS pedido, productos.titulo AS productonombre, monto, estado_pago, 
+  fecha_pago, DATE_FORMAT(pagos.fecha_pago, '%Y') AS year, DATE_FORMAT(pagos.fecha_pago, '%m') AS mes,
   DATE_FORMAT(pagos.fecha_pago, '%d') AS day, referencia_paypal");
   $select->innerjoin("detalle_pedido USING (id_pedido)");
   $select->innerjoin("productos USING (id_producto)");
@@ -138,7 +139,10 @@ elseif (isset($_GET["modificarPedido"])) {
 
 ///// PRODUCTOS
 elseif (isset($_GET["productos"])) {
-  $select = $con->select("productos", "productos.id_producto AS id, productos.titulo AS titulo, productos.descripcion As descripcion, productos.precio As precio, productos.talla As talla, productos.estado As estado, categorias.id_categoria AS id_categoria, usuarios.id_usuario AS id_vendedor, DATE_FORMAT(productos.fecha_publicacion, '%Y') AS year, DATE_FORMAT(productos.fecha_publicacion, '%m') AS mes, DATE_FORMAT(productos.fecha_publicacion, '%d') AS day, disponible");
+  $select = $con->select("productos", "productos.id_producto AS id, productos.titulo AS titulo, productos.descripcion As descripcion,
+   productos.precio As precio, productos.talla As talla, productos.estado As estado, categorias.id_categoria AS id_categoria, 
+   usuarios.id_usuario AS id_vendedor, DATE_FORMAT(productos.fecha_publicacion, '%Y') AS year, DATE_FORMAT(productos.fecha_publicacion, '%m') AS mes, 
+   DATE_FORMAT(productos.fecha_publicacion, '%d') AS day, disponible");
   $select->innerjoin("categorias ON categorias.id_categoria = productos.id_categoria");
   $select->innerjoin("usuarios ON usuarios.id_usuario = productos.id_vendedor");
   $select->orderby("productos.id_producto DESC");
