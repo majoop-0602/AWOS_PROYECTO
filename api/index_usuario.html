@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Detalle Pedido</title>
+    <title>Usuarios</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -11,7 +11,7 @@
     <script src="js/main.js" defer></script>
 </head>
 <body>
-      <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
     <div class="container-fluid">
         <ul class="navbar-nav">
         <li class="nav-item">
@@ -35,57 +35,57 @@
         </ul>
     </div>
     </nav>
-    <div class="container">
-        <form id="frmDetalle" method="POST">
-            <h1 class="mt-4 mb-4">Gestión de Detalle Producto</h1>
+    <div class = "container">
 
+
+         <form id="frmUsuario" method="POST">
+        
+            <h1 class="mt-4 mb-4">Gestión de Usuarios</h1>
             <div class="mb-1">
-                <label for="txtid_detalle">ID:</label>
-                <input type="text" id="txtid_detalle" name="txtid_detalle" class="form-control" readonly>
+                <label for="txtIdUsuario">ID:</label>
+                <input type="text" id="txtIdUsuario" name="txtIdUsuario" class="form-control" placeholder="Automático" readonly>
             </div>
-
             <div class="mb-1">
-                <label for="cboPedido">Pedido:</label>
-                <select type="text" id="cboPedido" name="cboPedido" class="form-select">
-                    <option value="">Selecciona una opción</option>
-                </select>
+                <label for="txtNombre">Nombre:</label>
+                <input type="text" id="txtNombre" name="txtNombre" class="form-control">
             </div>
-
              <div class="mb-1">
-                <label for="cboProducto">Producto:</label>
-                <select type="text" id="cboProducto" name="cboProducto" class="form-select">
-                    <option value="">Selecciona una opción</option>
-                </select>
-            </div>
-
-            <div class="mb-1">
-                <label for="txtcantidad">Cantidad:</label>
-                <input type="number" id="txtcantidad" name="txtcantidad" class="form-control">
+                <label for="txtEmail">Email:</label>
+                <input type="text" id="txtEmail" name="txtEmail" class="form-control">
             </div>
             <div class="mb-1">
-                <label for="txtprecio_unitario">Precio Unitario:</label>
-                <input type="number" id="txtprecio_unitario" name="txtprecio_unitario" class="form-control">
+                <label for="txtTelefono">Telefono:</label>
+                <input type="number" id="txtTelefono" maxlength="10"  name="txtTelefono" class="form-control">
             </div>
             <div class="mb-1">
+                <label for="txtContrasena">Contraseña:</label>
+                <input type="text" id="txtContrasena" name="txtContrasena" class="form-control">
+            </div>
+            <div class="mb-1"><br>
                 <button type="submit" class="btn btn-primary">Guardar</button>
                 <button type="reset" class="btn btn-secondary">Cancelar</button>
             </div>
         </form>
+        <br>
         <table class="table table-sm table-bordered">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>ID Pedido</th>
-                    <th>ID Producto</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Acciones</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Telefono</th>
+                    <th>Contraseña</th>
+                    <th>Fecha Registro</th>
+                    <th>Accion</th>
                 </tr>
             </thead>
-            <tbody id="tbodyDetalle">
+            <tbody id="tbodyUsuarios">
             </tbody>
         </table>
     </div>
+
+
+    
+
 </body>
 </html>
