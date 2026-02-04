@@ -18,16 +18,16 @@
     </div>
     <div id="divMapa" class="container text-center p-3 my-2">
             <h3 class="mt-4 mb-4" style="text-align: center;">Tu ubicación actual:</h3>
+            <p class="mt-3">
+            ¿Deseas cambiar tu ubicacion?
+            <a href="index_direcciones.html">Haz clic aqui</a>
+</p>
     </div>
 
             <script>
-            const options = {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0,
-            }
 
             function generarMapa(longitud, latitud) {
+                $("#divMapa iframe").remove() 
                 $("#divMapa").append(`
                     <iframe 
                         width="100%" 
@@ -39,31 +39,34 @@
                     </iframe>
                 `)
             }
+            $.get("servicioUbicaciones.php?obtenerUltimaUbicacion", function (respuesta) {
+                if (respuesta.length > 0) {
+                    // Si existe una dirección guardada
+                    const lat = respuesta[0].latitud
+                    const lng = respuesta[0].longitud
+                    generarMapa(lng, lat)
+                } else {
+                    // Si no hay direcciones, usar ubicación actual
+                    navigator.geolocation.getCurrentPosition(success, error, options)
+                }
+            })
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0,
+            }
 
             function success(pos) {
                 const crd = pos.coords
-
-                const longitud = crd.longitude
-                const latitud = crd.latitude
-                const precision = crd.accuracy
-
-                console.log("Ubicación actual:")
-                console.log(`Latitude : ${latitud}`)
-                console.log(`Longitude: ${longitud}`)
-                console.log(`Precisión: ${precision} metros`)
-
-                generarMapa(longitud, latitud)
-
-                $("#hidLatitud").val(latitud)
-                $("#hidLongitud").val(longitud)
+                generarMapa(crd.longitude, crd.latitude)
             }
 
             function error(err) {
                 console.warn(`ERROR(${err.code}): ${err.message}`)
             }
-
-            navigator.geolocation.getCurrentPosition(success, error, options)
             </script>
 
     
 </body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direcciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+</head>
+<body>
+    <div class="container">
+         <h1 class="mt-4 mb-4">Gestión de Direcciones</h1>
+
+         <form id="frmDirecciones" method="POST">
+            <div class="mb-1">
+                <label for="txtid">ID:</label>
+                <input type="text" id="txtid" name="txtid" class="form-control" readonly>
+            </div>
+            <div class="mb-1">
+                <label for="cboUsuario">Usuario:</label>
+                <select type="text" id="cboUsuario" name="cboUsuario" class="form-select">
+                    
+                </select>
+            </div>
+            <div class="mb-1">
+                <label for="txtCalle">Calle:</label>
+                <input type="text" id="txtCalle" name="txtCalle" class="form-control" >
+            </div>
+            <div class="mb-1">
+                <label for="txtCiudad">Ciudad:</label>
+                <input type="text" id="txtCiudad" name="txtCiudad" class="form-control" >
+            </div>
+            <div class="mb-1">
+                <label for="cboEstado">Estado:</label>
+                <select type="text" id="cboEstado" name="cboEstado" class="form-select">
+                        <option value="Aguascalientes">Aguascalientes</option>
+                        <option value="Baja California">Baja California</option>
+                        <option value="Baja California Sur">Baja California Sur</option>
+                        <option value="Campeche">Campeche</option>
+                        <option value="Chiapas">Chiapas</option>
+                        <option value="Chihuahua">Chihuahua</option>
+                        <option value="Ciudad de México">Ciudad de México</option>
+                        <option value="Coahuila">Coahuila</option>
+                        <option value="Colima">Colima</option>
+                        <option value="Durango">Durango</option>
+                        <option value="Estado de Mexico">Estado de Mexico</option>
+                        <option value="Guanajuato">Guanajuato</option>
+                        <option value="Guerrero">Guerrero</option>
+                        <option value="Hidalgo">Hidalgo</option>
+                        <option value="Jalisco">Jalisco</option>
+                        <option value="Michoacan">Michoacan</option>
+                        <option value="Morelos">Morelos</option>
+                        <option value="Nayarit">Nayarit</option>
+                        <option value="Nuevo Leon">Nuevo Leon</option>
+                        <option value="Oaxaca">Oaxaca</option>
+                        <option value="Puebla">Puebla</option>
+                        <option value="Queretaro">Queretaro</option>
+                        <option value="Quintana Roo">Quintana Roo</option>
+                        <option value="San Luis Potosi">San Luis Potosi</option>
+                        <option value="Sinaloa">Sinaloa</option>
+                        <option value="Sonora">Sonora</option>
+                        <option value="Tabasco">Tabasco</option>
+                        <option value="Tamaulipas">Tamaulipas</option>
+                        <option value="Tlaxcala">Tlaxcala</option>
+                        <option value="Veracruz">Veracruz</option>
+                        <option value="Yucatan">Yucatan</option>
+                        <option value="Zacatecas">Zacatecas</option>
+                </select>
+            </div>
+            <div class="mb-1">
+                <label for="txtCodigoPostal">Código Postal:</label>
+                <input type="text" id="txtCodigoPostal" name="txtCodigoPostal" class="form-control" >
+            </div>
+            <div class="mb-1">
+                <label for="txtDescripcion">Descripción:</label>
+                <input type="text" id="txtDescripcion" name="txtDescripcion" class="form-control" >
+            </div>
+            <div class="mb-1">
+                <label for="txtLatitud">Latitud:</label>
+                <input type="text" id="txtLatitud" name="txtLatitud" class="form-control" >
+            </div>
+            <div class="mb-1">
+                <label for="txtLongitud">Longitud:</label>
+                <input type="text" id="txtLongitud" name="txtLongitud" class="form-control" >
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="reset" class="btn btn-secondary">Cancelar</button>
+                
+         </form>
+         <br>
+            <table class="table table-sm table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Calle</th>
+                    <th>Ciudad</th>
+                    <th>Estado</th>
+                    <th>Código Postal</th>
+                    <th>Descripción</th>
+                    <th>Latitud</th>
+                    <th>Longitud</th>
+                    <th>Accion</th>
+                </thead>
+                  <tbody id="tbodyDirecciones"></tbody>
+            </table>
+    </div>
+<script>
+    function buscarDirecciones() {
+    $.get("servicioUbicaciones.php?buscarUbicaciones", function (direcciones) {
+        $("#tbodyDirecciones").html("")
+
+        for (let x in direcciones) {
+            const d = direcciones[x]
+
+            $("#tbodyDirecciones").append(`
+            <tr>
+                <td>${d.id_direccion}</td>
+                <td>${d.usuario}</td>
+                <td>${d.calle}</td>
+                <td>${d.ciudad}</td>
+                <td>${d.estado}</td>
+                <td>${d.codigo_postal}</td>
+                <td>${d.descripcion}</td>
+                <td>${d.latitud}</td>
+                <td>${d.longitud}</td>
+                <td>
+                    <button class="btn btn-info btn-editar" data-id="${d.id_direccion}">
+                        Modificar
+                    </button>
+                </td>
+            </tr>`)
+        }
+    })
+}
+
+buscarDirecciones()
+
+$.get("servicioUbicaciones.php?usuarioCombo", function (usuarios) {
+    $("#cboUsuario").html("")
+
+    for (let x in usuarios) {
+        const usuario = usuarios[x]
+
+        $("#cboUsuario").append(`
+            <option value="${usuario.value}">
+                ${usuario.label}
+            </option>
+        `)
+    }
+})
+$("#frmDirecciones").submit(function (event) {
+    event.preventDefault()
+
+    if ($("#txtid").val()) {
+        $.post("servicioUbicaciones.php?modificarDireccion", $(this).serialize(), function (respuesta) {
+            if (respuesta == "correcto") {
+                alert("Direccion modificado correctamente")
+                 window.location.href = "index.html"
+            }
+        })
+        return
+    }
+
+    $.post("servicioUbicaciones.php?agregarUbicacion", $(this).serialize(), function (respuesta) {
+        if (respuesta != "0") {
+            alert("Direccion agregado correctamente")
+            window.location.href = "index.html"
+        }
+    })
+})
+
+$(document).on("click", ".btn-editar", function (event) {
+    const id = $(this).data("id")
+
+    $.get("servicioUbicaciones.php?editarDireccion", {
+        id: id
+    }, function (direcciones) {
+        const dire = direcciones[0]
+
+        $("#txtid").val(dire.id_direccion)
+        $("#cboUsuario").val(dire.id_usuario)
+        $("#txtCalle").val(dire.calle)
+        $("#txtCiudad").val(dire.ciudad)
+        $("#cboEstado").val(dire.estado)
+        $("#txtCodigoPostal").val(dire.codigo_postal)
+        $("#txtDescripcion").val(dire.descripcion)
+        $("#txtLatitud").val(dire.latitud)
+        $("#txtLongitud").val(dire.longitud)
+    })
+})
+
+//generarMapa(longitud, latitud)
+
+</script>
+
+</body>
+</html>

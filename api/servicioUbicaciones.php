@@ -11,11 +11,21 @@ $con = new Conexion(array(
 ));
 
 if (isset($_GET["agregarUbicacion"])) {
+    $usuario = $_POST["cboUsuario"];
+    $calle = $_POST["txtCalle"];
+    $ciudad = $_POST["txtCiudad"];
+    $estado = $_POST["cboEstado"];
+    $codigo_postal = $_POST["txtCodigoPostal"];
     $descripcion = $_POST["txtDescripcion"];
-    $latitud     = $_POST["hidLatitud"];
-    $longitud    = $_POST["hidLongitud"];
+    $latitud     = $_POST["txtLatitud"];
+    $longitud    = $_POST["txtLongitud"];
 
-    $insert = $con->insert("reportes", "descripcion, latitud, longitud");
+    $insert = $con->insert("direcciones", "id_usuario, calle, ciudad, estado, codigo_postal, descripcion, latitud, longitud");
+    $insert->value($usuario);
+    $insert->value($calle);
+    $insert->value($ciudad);
+    $insert->value($estado);
+    $insert->value($codigo_postal);
     $insert->value($descripcion);
     $insert->value($latitud);
     $insert->value($longitud);
@@ -23,14 +33,64 @@ if (isset($_GET["agregarUbicacion"])) {
 
     echo $con->lastInsertId();
 }
-elseif (isset($_GET["buscarUbicaciones"])) {
-    $select = $con->select("reportes");
+elseif (isset($_GET["usuarioCombo"])) {
+    $select = $con->select("usuarios", "id_usuario AS value, nombre AS label");
+    $select->orderby("nombre ASC");
+    $select->limit(10);
+
+    $array = array(
+        array("value" => "", "label" => "Selecciona una opción")
+    );
+
+    foreach ($select->execute() as $usuario) {
+        $array[] = array(
+            "value" => $usuario["value"],
+            "label" => $usuario["label"]
+        );
+    }
+
     header("Content-Type: application/json");
-    echo json_encode($select->execute());
+    echo json_encode($array);
 }
-elseif (isset($_GET["editarUbicacion"])) {
-    $select = $con->select("reportes");
-    $select->where("idReporte", "=", $_GET["id"]);
+
+elseif (isset($_GET["buscarUbicaciones"])) {
+     $select = $con->select("direcciones","id_direccion, usuarios.nombre AS usuario, calle, ciudad, 
+  estado, codigo_postal, descripcion, latitud, longitud");
+  $select->innerjoin("usuarios USING (id_usuario)");
+  $select->orderBy("id_direccion","DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+elseif (isset($_GET["editarDireccion"])) {
+  $select = $con->select("direcciones", "*");
+  $select->where("id_direccion", "=", $_GET["id"]);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+
+
+elseif (isset($_GET["modificarDireccion"])) {
+  $update = $con->update("direcciones");
+  $update->set("calle", $_POST["txtCalle"]);
+  $update->set("ciudad", $_POST["txtCiudad"]);
+  $update->set("estado", $_POST["cboEstado"]);
+  $update->set("codigo_postal", $_POST["txtCodigoPostal"]);
+  $update->set("descripcion", $_POST["txtDescripcion"]);
+  $update->set("latitud", $_POST["txtLatitud"]);
+  $update->set("longitud", $_POST["txtLongitud"]);
+  $update->where("id_direccion", "=", $_POST["txtid"]);
+
+  echo $update->execute() ? "correcto" : "error";
+}
+
+elseif (isset($_GET["obtenerUltimaUbicacion"])) {
+    $select = $con->select("direcciones", "latitud, longitud");
+    $select->orderBy("id_direccion", "DESC");
+    $select->limit(1);
+
     header("Content-Type: application/json");
     echo json_encode($select->execute());
 }
