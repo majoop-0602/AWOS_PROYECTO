@@ -308,6 +308,18 @@ elseif(isset($_GET["modificardetalle_pedido"])) {
 
 }
 
+elseif (isset($_GET["eliminardetalle_pedido"])) {
+  $delete = $con->delete("detalle_pedido");
+  $delete->where("id_detalle", "=", $_POST["txtid_detalle"]);
+
+  if ($delete->execute()) {
+    echo "correcto";
+  }
+  else {
+    echo "error";
+  }
+}
+
 
 
 /////USUARIOS

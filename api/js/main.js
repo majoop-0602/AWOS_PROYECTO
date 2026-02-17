@@ -271,6 +271,10 @@ function buscardetalle_pedido() {
                     <button class="btn btn-info btn-editar" data-id="${detalle.id_detalle}">
                         Modificar
                     </button>
+                    <button class="btn btn-danger btn-eliminar" data-id="${detalle.id_detalle}">
+                        Eliminar
+                    </button>
+
                 </td>
             </tr>
             `)   
@@ -336,7 +340,22 @@ $(document).on("click", ".btn-editar", function () {
         $("#txtprecio_unitario").val(de.precio_unitario)
     })
 })
+$(document).on("click", ".btn-eliminar", function (event) {
+    const id = $(this).data("id")
 
+    if (!confirm("Deseas eliminar este detalle?")) {
+        return
+    }
+
+    $.post("servicio.php?eliminardetalle_pedido", {
+        txtid_detalle: id
+    }, function (respuesta) {
+        if (respuesta == "correcto") {
+            alert("Detalle eliminado correctamente")
+            buscardetalle_pedido()
+        }
+    })
+})
 
 /////////USUARIOS
 function buscarUsuarios() {
@@ -353,7 +372,7 @@ function buscarUsuarios() {
                 <td>${usuario.telefono}</td>
                 <td>${usuario.contrasena}</td>
                 <td>${usuario.fecha_registro}</td>
-                <td>
+                <td>              
                     <button class="btn btn-danger btn-eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
                 </td>
             </tr>`)
