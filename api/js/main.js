@@ -214,6 +214,8 @@ $("#frmProducto").submit(function (event) {
             alert("Producto agregado correctamente")
             $("#frmProducto").get(0).reset()
             buscarProductos()
+
+            conn.send("buscar-productos")
         }
     })
 })
@@ -251,6 +253,7 @@ $(document).on("click", ".btn-eliminar", function (event) {
         if (respuesta == "correcto") {
             alert("Producto eliminado correctamente")
             buscarProductos()
+            conn.send("buscar-productos")
         }
     })
 })
@@ -427,9 +430,17 @@ conn.onmessage = function (e) {
         const toastLiveExample = document.getElementById("liveToast")
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
         toastBootstrap.show()
-    }
+    }else if (comando == "buscar-productos") {
+        // Asincrono (Dentro de la APP)
+        buscarProductos()
+
+        const toastLiveExample = document.getElementById("liveToast")
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastBootstrap.show()
 }
 conn.onopen = function (e) {
     conn.send("Conexión WebSocket Correcta")
 }
+}
+
 
