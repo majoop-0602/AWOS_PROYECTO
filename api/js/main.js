@@ -62,7 +62,12 @@ $("#frmPagos").submit(function (event) {
             alert("Pago registrado correctamente.")
             $("#frmPagos").get(0).reset()
             buscarPagos()
-        }
+
+
+
+            conn.send("buscar-pagos")
+             }
+            
     })
     return
 })
@@ -410,3 +415,21 @@ $(document).on("click", ".btn-eliminar", function (event) {
         }
     })
 })
+
+const conn = new WebSocket("ws://localhost:8080/chat")
+conn.onmessage = function (e) {
+    const comando = e.data
+    console.log(comando)
+    if (comando == "buscar-pagos") {
+        // Asincrono (Dentro de la APP)
+        buscarPagos()
+
+        const toastLiveExample = document.getElementById("liveToast")
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+        toastBootstrap.show()
+    }
+}
+conn.onopen = function (e) {
+    conn.send("Conexión WebSocket Correcta")
+}
+
