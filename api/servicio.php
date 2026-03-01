@@ -48,29 +48,28 @@ $con = new Conexion(array(
 
 ///// PAGOS
 if (isset($_GET ["agre_pagos"])) {
-  $insert = $con->insert("pagos","id_pedido, monto, estado_pago, referencia_paypal");
-  $insert->value($_POST["txtid_pedido"]);
-  $insert->value($_POST["txtMonto"]);
-  $insert->value($_POST["cboEstadoPago"]);
-  $insert->value($_POST["txtReferenciaPaypal"]);
-  $insert->execute();
+  $prepare = $con->prepare("CALL AgregarPagos(:id_pedido,:monto,:estado_pago,:referencia_paypal, @NUEVOid_pago, @NUEVOid_pedido, @NUEVOmonto, @NUEVOestado_pago, @NUEVOreferencia_paypal)");
+  $prepare->bindParam(":id_pedido", $_POST["txtid_pedido"]);
+  $prepare->bindParam(":monto", $_POST["txtMonto"]);
+  $prepare->bindParam(":estado_pago", $_POST["cboEstadoPago"]);
+  $prepare->bindParam(":referencia_paypal", $_POST["txtReferenciaPaypal"]);
+  $prepare->execute();
 
+  $pagoAgregado = array();
+
+  foreach($con->query("SELECT @NUEVOid_pago, @NUEVOid_pedido, @NUEVOmonto, @NUEVOestado_pago,
+   @NUEVOreferencia_paypal;") as $pagos){
+    $pagoAgregado = $pagos;
+  }
   
-  $id = $con->lastInsertId();
+  //$id = $con->lastInsertId();
 
-  if (is_numeric($id)) {
-    echo $id;
-    } else {
-    echo "0";
-   }
+  header("Content-Type: application/json");
+  echo json_encode($pagoAgregado);
 }
 
 elseif (isset($_GET ["pagos"])) {
-  $select = $con->select("pagos","id_pago, detalle_pedido.id_pedido AS pedido, productos.titulo AS productonombre, monto, estado_pago, 
-  fecha_pago, DATE_FORMAT(pagos.fecha_pago, '%Y') AS year, DATE_FORMAT(pagos.fecha_pago, '%m') AS mes,
-  DATE_FORMAT(pagos.fecha_pago, '%d') AS day, referencia_paypal");
-  $select->innerjoin("detalle_pedido USING (id_pedido)");
-  $select->innerjoin("productos USING (id_producto)");
+  $select = $con->select("view_InfoPagos");
   $select->orderBy("id_pago","DESC");
   $select->limit(10);
 
@@ -80,10 +79,8 @@ elseif (isset($_GET ["pagos"])) {
 }
 
 elseif (isset($_GET ["obt_id_pedido"])) {
-  $select = $con->select("detalle_pedido", "detalle_pedido.id_pedido, productos.titulo AS nombre, pedidos.total AS total");
-  $select->innerjoin("productos USING (id_producto)");
-  $select->innerjoin("pedidos USING (id_pedido)");
-   $select->orderby("detalle_pedido.id_pedido","DESC");
+  $select = $con->select("view_obt_id_pedido");
+   $select->orderby("id_pedido","DESC");
   $select->limit(10);
 
   header("Content-Type: application/json");
@@ -92,7 +89,7 @@ elseif (isset($_GET ["obt_id_pedido"])) {
 
 ///// PEDIDOS
 elseif (isset($_GET["pedidos"])) {
-  $select = $con->select("pedidos", "id_pedido, id_comprador, fecha_pedido, total, estado");
+  $select = $con->select("view_pedidos");
   $select->orderby("id_pedido DESC");
 
   header("Content-Type: application/json");
@@ -128,60 +125,59 @@ elseif (isset($_GET["editarPedido"])) {
 
 
 elseif (isset($_GET["modificarPedido"])) {
-  $update = $con->update("pedidos");
-  $update->set("id_comprador", $_POST["cboComprador"]);
-  $update->set("total", $_POST["txtTotal"]);
-  $update->set("estado", $_POST["cboEstado"]);
-  $update->where("id_pedido", "=", $_POST["txtId"]);
+  $prepare = $con->prepare("CALL ModificarPedido(:id_pedido,:id_comprador,:total,:estado)");
+  $prepare->bindParam(":id_pedido", $_POST["txtId"]);
+  $prepare->bindParam(":id_comprador", $_POST["cboComprador"]);
+  $prepare->bindParam(":total", $_POST["txtTotal"]);
+  $prepare->bindParam(":estado", $_POST["cboEstado"]);
+  $prepare->execute();
 
-  echo $update->execute() ? "correcto" : "error";
-}
-
-///// PRODUCTOS
-elseif (isset($_GET["productos"])) {
-  $select = $con->select("productos", "productos.id_producto AS id, productos.titulo AS titulo, productos.descripcion As descripcion,
-   productos.precio As precio, productos.talla As talla, productos.estado As estado, categorias.id_categoria AS id_categoria, 
-   usuarios.id_usuario AS id_vendedor, DATE_FORMAT(productos.fecha_publicacion, '%Y') AS year, DATE_FORMAT(productos.fecha_publicacion, '%m') AS mes, 
-   DATE_FORMAT(productos.fecha_publicacion, '%d') AS day, disponible");
-  $select->innerjoin("categorias ON categorias.id_categoria = productos.id_categoria");
-  $select->innerjoin("usuarios ON usuarios.id_usuario = productos.id_vendedor");
-  $select->orderby("productos.id_producto DESC");
-  $select->limit(10);
-
-  header("Content-Type: application/json");
-  echo json_encode($select->execute());
-}
-elseif (isset($_GET["eliminarProducto"])) {
-  $delete = $con->delete("productos");
-  $delete->where("id_producto", "=", $_POST["txtId"]);
-
-  if ($delete->execute()) {
+  if($prepare->execute()) {
     echo "correcto";
   }
   else {
     echo "error";
   }
 }
+
+///// PRODUCTOS
+elseif (isset($_GET["productos"])) {
+  $select = $con->select("view_productos");
+  $select->orderby("id DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
+elseif (isset($_GET["eliminarProducto"])) {
+  $prepare = $con->prepare("CALL EliminarProducto(:idProducto)");
+    $prepare->bindParam(":idProducto", $_POST["txtId"]);
+    $prepare->execute();
+    $prepare->closeCursor();
+
+    echo "correcto";
+
+}
 elseif (isset($_GET["agregarProducto"])) {
-  $insert = $con->insert("productos", "titulo, descripcion, precio, talla, estado, id_categoria, id_vendedor, disponible");
-  $insert->value($_POST["txtTitulo"]);
-  $insert->value($_POST["txtDescripcion"]);
-  $insert->value($_POST["txtPrecio"]);
-  $insert->value($_POST["txtTalla"]);
-  $insert->value($_POST["cboEstado"]);
-  $insert->value($_POST["cboIdCat"]);
-  $insert->value($_POST["cboIdVendedor"]);
-  $insert->value($_POST["cboDisponible"]);
-  $insert->execute();
+  $prepare = $con->prepare("CALL AgregarProducto(:titulo,:descripcion,:precio,:talla,:estado,:categoria,:vendedor,:disponible, @NUEVOid_producto, @NUEVOtitulo, @NUEVOdescripcion, @NUEVOprecio, @NUEVOTalla, @NUEVOestado, @NUEVOid_categoria, @NUEVOid_vendedor, @NUEVOdisponible)");
+  $prepare->bindParam(":titulo", $_POST["txtTitulo"]);
+  $prepare->bindParam(":descripcion", $_POST["txtDescripcion"]);
+  $prepare->bindParam(":precio", $_POST["txtPrecio"]);
+  $prepare->bindParam(":talla", $_POST["txtTalla"]);
+  $prepare->bindParam(":estado", $_POST["cboEstado"]);
+  $prepare->bindParam(":categoria", $_POST["cboIdCat"]);
+  $prepare->bindParam(":vendedor", $_POST["cboIdVendedor"]);
+  $prepare->bindParam(":disponible", $_POST["cboDisponible"]);
+  $prepare->execute();
 
-  $id = $con->lastInsertId();
+  $productoAgregado = array();
 
-  if (is_numeric($id)) {
-    echo $id;
+  foreach($con->query("SELECT @NUEVOid_producto, @NUEVOtitulo, @NUEVOdescripcion, @NUEVOprecio, @NUEVOTalla, @NUEVOestado, @NUEVOid_categoria, @NUEVOid_vendedor, @NUEVOdisponible;") as $productos){
+    $productoAgregado = $productos;
   }
-  else {
-    echo "0";
-  }
+   header("Content-Type: application/json");
+    echo json_encode($productoAgregado);
+
 }
 elseif (isset($_GET["categoriasCombo"])) {
     $select = $con->select("categorias", "id_categoria AS value, nombre_categoria AS label");
@@ -225,8 +221,7 @@ elseif (isset($_GET["vendedorCombo"])) {
 
 /////DETALLE PEDIDO
 elseif(isset($_GET["detalle_pedido"])) {
-  $select = $con->select("detalle_pedido","id_detalle, id_pedido, id_producto, productos.titulo AS productonombre, cantidad, precio_unitario");
-  $select->innerjoin("productos USING (id_producto)");
+  $select = $con->select("view_detalle_pedido");
   $select->orderby("id_detalle","DESC");
   $select->limit(10);
 
@@ -234,20 +229,20 @@ elseif(isset($_GET["detalle_pedido"])) {
   echo json_encode($select->execute());
 }
 elseif(isset($_GET["agregardetalle_pedido"])) {
-  $insert = $con->insert("detalle_pedido","id_pedido, id_producto, cantidad, precio_unitario");
-  $insert->value($_POST["cboPedido"]);
-  $insert->value($_POST["cboProducto"]);
-  $insert->value($_POST["txtcantidad"]);
-  $insert->value($_POST["txtprecio_unitario"]);
-  $insert->execute();
+  $prepare = $con->prepare("CALL AgregarDetalle(:id_pedido,:id_producto,:cantidad,:precio_unitario, @NUEVOid_detalle, @NUEVOid_pedido, @NUEVOid_producto, @NUEVOcantidad, @NUEVOprecio_unitario)");
+  $prepare->bindParam(":id_pedido", $_POST["cboPedido"]);
+  $prepare->bindParam(":id_producto", $_POST["cboProducto"]);
+  $prepare->bindParam(":cantidad", $_POST["txtcantidad"]);
+  $prepare->bindParam(":precio_unitario", $_POST["txtprecio_unitario"]);
+  $prepare->execute();
 
-  $id = $con->lastInsertId();
+  $detalleAgregado = array();
 
-  if (is_numeric($id)) {
-    echo $id;
-    } else {
-    echo "0";
-   }
+  foreach($con->query("SELECT @NUEVOid_detalle, @NUEVOid_pedido, @NUEVOid_producto, @NUEVOcantidad, @NUEVOprecio_unitario;") as $detalles){
+    $detalleAgregado = $detalles;
+  }
+   header("Content-Type: application/json");
+    echo json_encode($detalleAgregado);
 
 }
 elseif (isset($_GET["PeCombo"])) {
@@ -297,65 +292,64 @@ elseif(isset($_GET["editardetalle_pedido"])) {
 
 }
 elseif(isset($_GET["modificardetalle_pedido"])) {
-  $update = $con->update("detalle_pedido");
-  $update->set("id_pedido", $_POST["cboPedido"]);
-  $update->set("id_producto", $_POST["cboProducto"]);
-  $update->set("cantidad", $_POST["txtcantidad"]);
-   $update->set("precio_unitario", $_POST["txtprecio_unitario"]);
-  $update->where("id_detalle", "=", $_POST["txtid_detalle"]);
+  $prepare = $con->prepare("CALL ModificarDetallePedido(:id_detalle,:id_pedido,:id_producto,:cantidad,:precio_unitario)");
+  $prepare->bindParam(":id_detalle", $_POST["txtid_detalle"]);
+  $prepare->bindParam(":id_pedido", $_POST["cboPedido"]);
+  $prepare->bindParam(":id_producto", $_POST["cboProducto"]);
+  $prepare->bindParam(":cantidad", $_POST["txtcantidad"]);
+  $prepare->bindParam(":precio_unitario", $_POST["txtprecio_unitario"]);
+  $prepare->execute();
 
-  echo $update->execute() ? "correcto" : "error";
-
-}
-
-elseif (isset($_GET["eliminardetalle_pedido"])) {
-  $delete = $con->delete("detalle_pedido");
-  $delete->where("id_detalle", "=", $_POST["txtid_detalle"]);
-
-  if ($delete->execute()) {
+  if($prepare->execute()) {
     echo "correcto";
   }
   else {
     echo "error";
   }
+
+}
+
+elseif (isset($_GET["eliminardetalle_pedido"])) {
+  $prepare = $con->prepare("CALL eliminarDetalle(:id_detalle)");
+    $prepare->bindParam(":id_detalle", $_POST["txtid_detalle"]);
+    $prepare->execute();
+    $prepare->closeCursor();
+
+    echo "correcto";
 }
 
 
 
 /////USUARIOS
 elseif (isset($_GET["usuarios"])) {
-  $select = $con->select("usuarios", "id_usuario, nombre, email, telefono, contrasena, foto_perfil, fecha_registro");
+  $select = $con->select("view_usuarios");
   $select->orderby("id_usuario DESC");
 
   header("Content-Type: application/json");
   echo json_encode($select->execute());
 }
 elseif (isset($_GET["eliminarUsuario"])) {
-  $delete = $con->delete("usuarios");
-  $delete->where("id_usuario", "=", $_POST["txtIdUsuario"]);
+  $prepare = $con->prepare("CALL eliminar_usuario(:idUsuario)");
+    $prepare->bindParam(":idUsuario", $_POST["txtIdUsuario"]);
+    $prepare->execute();
+    $prepare->closeCursor();
 
-  if ($delete->execute()) {
     echo "correcto";
-  }
-  else {
-    echo "error";
-  }
 }
 elseif (isset($_GET["agregarUsuario"])) {
-  $insert = $con->insert("usuarios", "nombre, email, telefono, contrasena");
-  $insert->value($_POST["txtNombre"]);
-  $insert->value($_POST["txtEmail"]);
-  $insert->value($_POST["txtTelefono"]);
-  $insert->value($_POST["txtContrasena"]);
-  $insert->execute();
+  $prepare = $con->prepare("CALL AgregarUsuario(:nombre,:email,:telefono,:contrasena, @NUEVOid_usuario, @NUEVOnombre, @NUEVOemail, @NUEVOtelefono, @NUEVOcontrasena)");
+  $prepare->bindParam(":nombre", $_POST["txtNombre"]);
+  $prepare->bindParam(":email", $_POST["txtEmail"]);
+  $prepare->bindParam(":telefono", $_POST["txtTelefono"]);
+  $prepare->bindParam(":contrasena", $_POST["txtContrasena"]);;
+  $prepare->execute();
 
-  $id = $con->lastInsertId();
+  $usuarioAgregado = array();
 
-  if (is_numeric($id)) {
-    echo $id;
+  foreach($con->query("SELECT @NUEVOid_usuario, @NUEVOnombre, @NUEVOemail, @NUEVOtelefono, @NUEVOcontrasena;") as $usuarios){
+    $usuarioAgregado = $usuarios;
   }
-  else {
-    echo "0";
-  }
+   header("Content-Type: application/json");
+    echo json_encode($usuarioAgregado);
 }
 ?>

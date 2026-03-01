@@ -14,9 +14,9 @@ function buscarPagos(){
                     <td>${pago.monto}</td>
                     <td>${pago.estado_pago}</td>
                     <td>${pago.fecha_pago}</td>
-                    <td>${pago.year}</td>
-                    <td>${pago.mes}</td>
-                    <td>${pago.day}</td>
+                    <td>${pago.YEAR}</td>
+                    <td>${pago.MONTH}</td>
+                    <td>${pago.DAY}</td>
                     <td>${pago.referencia_paypal}</td>
                 </tr>
             `)   
@@ -58,8 +58,8 @@ $("#frmPagos").submit(function (event) {
     event.preventDefault();
 
     $.post("servicio.php?agre_pagos", $(this).serialize(),function (respuesta) {
-        if (respuesta != "0") {
-            alert("Pago registrado correctamente.")
+        if (Object.keys(respuesta).length) {
+            alert(`Pago del pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
             $("#frmPagos").get(0).reset()
             buscarPagos()
 
@@ -90,7 +90,7 @@ function buscarPedidos() {
             $("#tbodyPedidos").append(`
             <tr>
                 <td>${p.id_pedido}</td>
-                <td>${p.id_comprador}</td>
+                <td>${p.nombre_comprador}</td>
                 <td>${p.fecha_pedido}</td>
                 <td>${p.total}</td>
                 <td>${p.estado}</td>
@@ -163,7 +163,7 @@ function buscarProductos() {
                 <td>${producto.id_vendedor}</td>
                 <td>${producto.disponible}</td>
                 <td>
-                    <button class="btn btn-danger btn-eliminar" data-id="${producto.id}">Eliminar</button>
+                    <button class="btn btn-danger btn-eliminar-producto" data-id="${producto.id}">Eliminar</button>
                 </td>
             </tr>`)
         }
@@ -210,8 +210,8 @@ $("#frmProducto").submit(function (event) {
     }
 
     $.post("servicio.php?agregarProducto", $(this).serialize(), function (respuesta) {
-        if (respuesta != "0") {
-            alert("Producto agregado correctamente")
+        if (Object.keys(respuesta).length) {
+            alert(`El producto ${respuesta["@NUEVOtitulo"]} fue agregado correctamente`)
             $("#frmProducto").get(0).reset()
             buscarProductos()
 
@@ -240,7 +240,7 @@ $(document).on("click", ".btn-editar", function (event) {
     })
 })
 
-$(document).on("click", ".btn-eliminar", function (event) {
+$(document).on("click", ".btn-eliminar-producto", function (event) {
     const id = $(this).data("id")
 
     if (!confirm("Deseas eliminar este producto?")) {
@@ -279,7 +279,7 @@ function buscardetalle_pedido() {
                     <button class="btn btn-info btn-editar" data-id="${detalle.id_detalle}">
                         Modificar
                     </button>
-                    <button class="btn btn-danger btn-eliminar" data-id="${detalle.id_detalle}">
+                    <button class="btn btn-danger btn-eliminar-detalle" data-id="${detalle.id_detalle}">
                         Eliminar
                     </button>
 
@@ -328,8 +328,8 @@ $("#frmDetalle").submit(function (event) {
     }
 
     $.post("servicio.php?agregardetalle_pedido", $(this).serialize(), function (respuesta) {
-        if (respuesta != "0") {
-            alert("Detalle agregado correctamente")
+        if (Object.keys(respuesta).length) {
+           alert(`Detalle pedido ${respuesta["@NUEVOid_detalle"]} del pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
             $("#frmDetalle").get(0).reset()
             buscardetalle_pedido()
         }
@@ -348,7 +348,7 @@ $(document).on("click", ".btn-editar", function () {
         $("#txtprecio_unitario").val(de.precio_unitario)
     })
 })
-$(document).on("click", ".btn-eliminar", function (event) {
+$(document).on("click", ".btn-eliminar-detalle", function (event) {
     const id = $(this).data("id")
 
     if (!confirm("Deseas eliminar este detalle?")) {
@@ -381,7 +381,7 @@ function buscarUsuarios() {
                 <td>${usuario.contrasena}</td>
                 <td>${usuario.fecha_registro}</td>
                 <td>              
-                    <button class="btn btn-danger btn-eliminar" data-id="${usuario.id_usuario}">Eliminar</button>
+                    <button class="btn btn-danger btn-eliminar-usuario" data-id="${usuario.id_usuario}">Eliminar</button>
                 </td>
             </tr>`)
         }
@@ -394,15 +394,15 @@ $("#frmUsuario").submit(function (event) {
     event.preventDefault()
 
     $.post("servicio.php?agregarUsuario", $(this).serialize(), function (respuesta) {
-        if (respuesta != "0") {
-            alert("Usuario agregado correctamente")
+        if (Object.keys(respuesta).length) {
+            alert(`Usuario ${respuesta["@NUEVOnombre"]} fue agregado correctamente`)
             $("#frmUsuario").get(0).reset()
             buscarUsuarios()
         }
     })
 })
 
-$(document).on("click", ".btn-eliminar", function (event) {
+$(document).on("click", ".btn-eliminar-usuario", function (event) {
     const id = $(this).data("id")
 
     if (!confirm("Deseas eliminar este Usuario?")) {
