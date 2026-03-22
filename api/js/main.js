@@ -1,6 +1,6 @@
 ///////PAGOS
 function buscarPagos(){
-    $.get("https://flask-hello-world-xnqt.onrender.com/pagos", function (pagos){
+    $.get("servicio.php?pagos", function (pagos){
     $("#tbodyPagos").html("")
 
     for(let x in pagos){
@@ -25,7 +25,7 @@ function buscarPagos(){
 }
 
 function cargarPedidos(){
-    $.get("https://flask-hello-world-xnqt.onrender.com/ob_idpedido", function (cargaID){
+    $.get("servicio.php?obt_id_pedido", function (cargaID){
     $("#tbodyObtID").html("")
 
     for(let x in cargaID){
@@ -57,7 +57,7 @@ buscarPagos()
 $("#frmPagos").submit(function (event) {
     event.preventDefault();
 
-    $.post("https://flask-hello-world-xnqt.onrender.com/agrega_pago", $(this).serialize(),function (respuesta) {
+    $.post("servicio.php?agre_pagos", $(this).serialize(),function (respuesta) {
         if (Object.keys(respuesta).length) {
             alert(`Pago del pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
             $("#frmPagos").get(0).reset()

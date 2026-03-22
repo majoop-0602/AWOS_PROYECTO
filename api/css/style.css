@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Barrio&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+*{
+    font-family:  'Montserrat', sans-serif;
+}
+body{
+    background-color: #F7EBEC;
+    height: 100vh;
+}
+.navbar{
+    background-color: #824C71;
+}
+.navbar-brand{
+    font-size: 28px;
+    color: #F7EBEC;
+    font-family: 'Barrio', system-ui;
+}
+.nav-link{
+    font-size: 18px;
+    color: #F7EBEC;
+}
+.btn-purple{
+    background: #DDBDD5;
+    color: #322214;
+    border-radius: 8px;
+}
+.btn-purple:hover{
+    background: #C9A3B8;
+    color: #322214;
+}
+.container h1{
+    text-align: center;
+    font-size: 60px;
+    color: #4A2545;
+    margin-top: 30px;
+    font-family: 'Barrio', system-ui;
+    font-weight: 400;
+}
+.container p{
+    text-align: center;
+    font-size: 20px;
+    color: #322214;
+    margin-top: 5px;
+}
+.vertical-center {
+    justify-content: center;
+    align-items: center;
+}
+.btn-home{
+   background: #824C71 ;
+   color:#F7EBEC;
+   border-radius: 8px;
+   justify-content: center;
+   margin: 20px;
+}
+.btn-home:hover{
+    background: #6B3A5B;
+    color: #F7EBEC;
+}
+.carousel-item img{
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+.carrusel-pequeno{
+    max-width: 800px; 
+    margin: 0 auto;
+}
+/*chat*/
+.chat-side {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(88, 88, 88, 0.719);
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 500px;
+    }
+
+    .chat-header {
+        background: #0d6efd;
+        color: white;
+        padding: 15px;
+        font-weight: bold;
+        border-radius: 15px 15px 0 0;
+        text-align: center;
+    }
+
