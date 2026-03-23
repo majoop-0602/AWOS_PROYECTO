@@ -69,6 +69,95 @@ body{
     max-width: 800px; 
     margin: 0 auto;
 }
+h3{
+    text-align: center;
+    font-size: 35px;
+    color: #4A2545;
+    margin-top: 30px;
+    font-family: 'Barrio', system-ui;
+    font-weight: 400;
+}
+.login-box{
+    display: flex;
+    flex-direction: column;
+    background-color:rgba(247, 235, 236,0.4);
+    padding: 40px;
+    border-radius: 10px;
+}
+.input-box input{
+    width: 100%;
+    padding: 13px 13px;
+    border: 1px solid #4A2545 ;
+    outline: none;
+    border-radius: 8px;
+    
+    
+}
+.input-box{
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+}
+.input-box label{
+    position: absolute;
+    top: 15px;
+    left: 13px;
+    color: #4A2545;
+    transition: .3s;
+   
+    
+}
+.input-box input:focus + label,
+.input-box input:valid + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+
+}
+.p-login{
+    text-align: center;
+    font-size: 15px;
+    color: #322214;
+    margin-top: 10px;
+}
+p a{
+    color: #4A2545;
+    text-decoration: none;
+}
+p a:hover{
+    text-decoration: underline;
+}
+.img-login{
+    width: 110%;
+    max-height: 600px;
+    object-fit: cover;
+    border-radius: 10px;
+    align-items: center;
+}
+.login-container{
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+}
+.row{
+   background-color: #F7EBEC;
+   border-radius: 20px;
+}
+#frmlogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#frmregistro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /*chat*/
 .chat-side {
         background: white;
