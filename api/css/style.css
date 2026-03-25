@@ -112,7 +112,7 @@ h4{
     padding: 40px;
     border-radius: 10px;
 }
-.input-box input{
+.input-box input, textarea{
     width: 100%;
     padding: 13px 13px;
     border: 1px solid #4A2545 ;
@@ -137,6 +137,16 @@ h4{
 }
 .input-box input:focus + label,
 .input-box input:valid + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+
+}
+.input-box textarea:focus + label,
+.input-box textarea:valid + label{
     top: -9px;
     color: #F7EBEC;
     background-color: #4A2545;
@@ -258,11 +268,22 @@ p a:hover{
     border-radius: 8px;
     border: none;
 }
+textarea{
+    resize: none;
+}
+.input-box textarea:not(:placeholder-shown) + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+}
 /*chat*/
 .chat-side {
-        background: white;
+        background: #DDBDD5;
         border-radius: 15px;
-        box-shadow: 0 8px 20px rgba(88, 88, 88, 0.719);
+        border: #4A2545;
         padding: 0;
         display: flex;
         flex-direction: column;
@@ -270,11 +291,38 @@ p a:hover{
     }
 
     .chat-header {
-        background: #0d6efd;
-        color: white;
+        background: #4A2545;
+        color: #F7EBEC;
         padding: 15px;
         font-weight: bold;
         border-radius: 15px 15px 0 0;
         text-align: center;
     }
+    .div-chat{
+        padding: 15px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
 
+    /* burbujas */
+    .mensaje{
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 15px;
+        font-size: 14px;
+        word-wrap: break-word;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* opcional: mensajes del usuario (derecha) */
+    .mensaje.propio{
+        align-self: flex-end;
+    }
+
+    /* otros (izquierda) */
+    .mensaje.otro{
+        align-self: flex-start;
+    }

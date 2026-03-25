@@ -3,68 +3,49 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Foro</title>
+    <title>Chat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="js/ratchet.js" defer></script>
     <link href="css/style.css" rel="stylesheet"/>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-     <div class="container-fluid">
-        <ul class="navbar-nav">
-             <li class="nav-item">
-            <a class="nav-link" href="index.html">Menu</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="index_usuario.html">Usuarios</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="index_productos.html">Productos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="index_pedidos.html">Pedidos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="index_detalle.html">Detalle Pedido</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="index_pagos.html">Pagos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="ratchet.html">Foro</a>
-        </li>
-        </ul>
-     </div>
-    </nav>
     <div class="container">
         <div class="row">
-             <h1 class="mt-4 mb-4">Foro</h1>
+             <h2 class="mt-4 mb-4">Chat</h2>
             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6">
                 <form id="frmMensaje" method="POST">
                     <div class="mb-1">
-                        <div class="row align-items-end">
+                        <div class="row g-2 align-items-center">
                             <div class="col-12 col-lg-8">
-                                <label for="txtUsuario">Usuario:</label>
-                                <input type="text" id="txtUsuario" name="txtUsuario" class="form-control">
+                                <div class="input-box mb-3">
+                                    <input type="text" id="txtUsuario" name="txtUsuario"  required>
+                                    <label for="txtUsuario">Usuario:</label>
+                                </div>   
                             </div>
-                            <div class="col-6 col-lg-2">
-                                <label for="colBg">Color Fondo:</label>
-                                <input type="color" id="colBg" name="colBg" class="form-control form-control-color">
+                            <div class="col-6 col-lg-2 text-center">
+                                <label style="color: #4A2545;">Fondo</label>
+                                <input type="color" id="colBg" name="colBg" class="form-control form-control-color" required>
                             </div>
-                            <div class="col-6 col-lg-2">
-                                <label for="colTexto">Color Texto:</label>
-                                <input type="color" id="colTexto" name="colTexto" class="form-control form-control-color">
+                            
+                            <div class="col-6 col-lg-2 text-center">
+                                <label style="color: #4A2545;">Texto</label>
+                                <input type="color" id="colTexto" name="colTexto" class="form-control form-control-color" required>
                             </div>
                         </div>
                     </div>
                     <div class="mb-1">
-                        <label for="txtMensaje">Mensaje:</label>
-                        <textarea name="txtMensaje" id="txtMensaje" class="form-control" rows="3"></textarea>
+                        <div class="input-box mb-3">
+                            <textarea name="txtMensaje" id="txtMensaje" rows="3" placeholder=" " required></textarea>
+                            <label for="txtMensaje">Mensaje:</label>
+                        </div>
+                        
                     </div>
-                    <div class="mb-1">
-                        <button class="btn btn-primary">Enviar</button>
+                    <div class="mb-3">
+                        <button class="btn btn-purple">Enviar</button>
                     </div>
                 </form>
             </div>
@@ -75,47 +56,5 @@
         </div>
         </div>
     </div>
-<script>
-        function agregarMensaje(data) {
-            const mensaje = JSON.parse(data)
-         $(".div-chat").append(`
-            <div class="mensaje" 
-                style="background: ${mensaje.colorFondo}; color: ${mensaje.colorTexto};">
-                <strong>${mensaje.usuario ? mensaje.usuario + ": " : ""}</strong>
-                ${mensaje.mensaje}
-            </div>
-        `)
-        $(".div-chat").scrollTop($(".div-chat")[0].scrollHeight);
-        }
-        // Then some JavaScript in the browser:
-        const conn = new WebSocket("ws://localhost:8080/chat")
-        conn.onmessage = function (e) {
-            const data = e.data
-            console.log(data)
-            agregarMensaje(data)
-        }
-        conn.onopen = function (e) {
-            conn.send(JSON.stringify({
-                colorFondo: "yellow",
-                colorTexto: "black",
-                usuario: "",
-                mensaje: "Alguien se unió al chat."
-            }))
-        }
-
-        $("#frmMensaje").submit(function (event) {
-            event.preventDefault()
-            const mensaje = {
-                colorFondo: $("#colBg").val(),
-                colorTexto: $("#colTexto").val(),
-                usuario: $("#txtUsuario").val(),
-                mensaje: $("#txtMensaje").val()
-            }
-            const data = JSON.stringify(mensaje)
-            conn.send(data)
-            agregarMensaje(data)
-            $("#txtMensaje").val("")
-        })
-    </script>
 </body>
 </html>
