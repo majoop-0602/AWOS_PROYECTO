@@ -196,6 +196,11 @@ p a:hover{
     flex-direction: column;
     align-items: center;
 }
+#frmUsuario{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 .filtros{
     display: flex;
     flex-wrap: wrap;
@@ -278,6 +283,83 @@ textarea{
     padding: 2px 7px;
     border-radius: 12px;
     font-size: 12px;
+}
+.input2-box input,
+.input2-box textarea{
+    width: 100%;
+    padding: 13px 13px;
+    border: 1px solid #4A2545 ;
+    outline: none;
+    border-radius: 8px;
+    
+    
+}
+.input2-box{
+    position: relative;
+    width: 100%;
+}
+.input2-box label{
+    position: absolute;
+    top: 15px;
+    left: 13px;
+    color: #4A2545;
+    transition: .3s;
+   
+    
+}
+.input2-box input:focus + label,
+.input2-box input:valid + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+
+}
+.input2-box textarea:focus + label,
+.input2-box textarea:valid + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+
+}
+table{
+    width: 100%;
+    border: 1px solid #4A2545;
+    border-collapse: collapse;
+}
+table thead{
+    background: #4A2545 ;
+    color: #F7EBEC ;
+    border: 1px solid #4A2545;
+    border-collapse: collapse;
+    
+}
+table thead th{
+    border: none ;
+    text-align: center ;
+    padding: 12px;
+    border: 1px solid #4A2545;
+    border-collapse: collapse;
+}
+table tbody tr:hover{
+    background-color: #F7EBEC ;
+    border: 1px solid #4A2545;
+    border-collapse: collapse;
+}
+table td{
+    text-align: center ;
+    vertical-align:middle ;
+    padding: 12px;
+    border: 1px solid #4A2545;
+    border-collapse: collapse;
+}
+table tbody tr:nth-child(even){
+    background-color: #F7EBEC ;
 }
 /*chat*/
 .chat-side {
