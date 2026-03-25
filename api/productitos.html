@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segunda Vuelta</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="js/main.js" defer></script>
+    <link href="css/style.css" rel="stylesheet"/>
+</head>
+<body id="page-top">
+        <nav class="navbar navbar-expand-sm"> 
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#page-top">Segunda Vuelta</a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#productos">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Mis Productos</a>
+                </li
+                <li class="nav-item">
+                    <a class="nav-link" href="">Mis Pedidos</a>
+                </li>
+                <li class="nav-item">
+                    <button class="btn btn-purple" onclick="window.location.href=''">
+                        Cerrar Sesión
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+<div id="productos" class="container">
+    <h2>Productos Disponibles</h2>
+    <p class="bienvenida">Explora nuestro catálogo y descubre prendas únicas que la comunidad tiene para ti. Encuentra estilos para todos los gustos y dale una segunda vida a la moda.</p>
+</div>
+<div class="container">
+    <h4>Filtrar por categoría</h4>
+    <div class="filtros">
+        <input type="radio" name="categoria" value="0" id="todos" checked>
+        <label for="todos">Todos</label>
+        <input type="radio" name="categoria" value="1" id="tops">
+        <label for="tops">Tops</label>
+        <input type="radio" name="categoria" value="2" id="vestidos">
+        <label for="vestidos">Vestidos</label>
+        <input type="radio" name="categoria" value="3" id="pantalones">
+        <label for="pantalones">Pantalones</label>
+        <input type="radio" name="categoria" value="4" id="abrigos">
+        <label for="abrigos">Abrigos</label>
+        <input type="radio" name="categoria" value="5" id="calzado">
+        <label for="calzado">Calzado</label>
+        <input type="radio" name="categoria" value="6" id="accesorios">
+        <label for="accesorios">Accesorios</label>
+    </div>
+    
+    <div id="container-productos" class="row"></div>
+</div>
+</body>
+</html>

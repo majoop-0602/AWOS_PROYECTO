@@ -170,6 +170,36 @@ function buscarProductos() {
     })
 }
 
+function cargarProductos(){
+    $.get("servicio.php?productos", function (productos){
+        $("#container-productos").html("")
+
+        for(let x in productos){
+            const producto = productos[x]
+
+            $("#container-productos").append(`
+                <div class="col-md-4 mb-4">
+                    <div class="producto-card">
+                            <img src="${producto.imagen}" alt="${producto.titulo}" class="producto-img">
+
+                            <div class="producto-body">
+                                <div class="producto-nombre">${producto.titulo}</div>
+                                <div class="producto-talla">${producto.talla}</div>
+                                <div class="producto-precio">$${producto.precio}</div>
+
+                                <div class="botones">
+                                    <button class="btn btn-pedir" onclick="window.location.href=''">Pedir</button>
+                                    <button class="btn btn-chat" onclick="window.location.href='ratchet.html'">Chat</button>
+                                </div>
+
+                            </div>
+                    </div>
+                </div>
+            `)
+        }
+    })
+}
+cargarProductos()
 buscarProductos()
 
 $.get("servicio.php?categoriasCombo", function (categorias) {

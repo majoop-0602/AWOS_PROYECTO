@@ -16,9 +16,15 @@ body{
     color: #F7EBEC;
     font-family: 'Barrio', system-ui;
 }
+.navbar-brand:hover{
+    color: #DDBDD5;
+}
 .nav-link{
     font-size: 18px;
     color: #F7EBEC;
+}
+.nav-link:hover{
+    color: #DDBDD5;
 }
 .btn-purple{
     background: #DDBDD5;
@@ -76,6 +82,28 @@ h3{
     margin-top: 30px;
     font-family: 'Barrio', system-ui;
     font-weight: 400;
+}
+h2{
+    text-align: left;
+    font-size: 40px;
+    color:#4A2545;
+    margin-top: 20px;
+    font-family: 'Barrio', system-ui;
+    font-weight: 300;
+}
+h4{
+    text-align: left;
+    font-size: 25px;
+    color:#4A2545;
+    margin-top: 40px;
+    font-family: 'Barrio', system-ui;
+    font-weight: 300;
+}
+.bienvenida{
+    text-align: left !important; 
+    font-size: 20px !important;
+    color: #322214;
+    margin-top: 3px ;
 }
 .login-box{
     display: flex;
@@ -157,6 +185,78 @@ p a:hover{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.filtros{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: left;
+    margin-bottom: 20px;
+}
+.filtros input{
+    display: none;
+}
+.filtros label{
+    padding: 8px 18px;
+    border-radius: 20px;
+    background-color: #DDBDD5;
+    cursor: pointer;
+    transition: 0,3s;
+}
+.filtros input:checked + label{
+    background-color: #c983b7;
+    color: #322214;
+}
+.producto-card{
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #DDBDD5;
+    transition: 0.3s;
+}
+.producto-card:hover{
+    transform: translateY(-5px);
+}
+.producto-img{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.producto-body{
+    padding: 15px;
+    text-align: left;
+}
+.producto-nombre{
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.producto-precio{
+    color: #322214;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.producto-talla{
+    color: #322214;
+    font-weight: normal;
+    margin-bottom: 10px;
+}
+.botones{
+    display: flex;
+    justify-content: right;
+    gap: 10px;
+}
+.btn-pedir{
+    background-color: #824C71;
+    color: #F7EBEC;
+    border-radius: 8px;
+    border: none;
+}
+.btn-chat{
+    background-color: #824C71;
+    color: #F7EBEC;
+    border-radius: 8px;
+    border: none;
 }
 /*chat*/
 .chat-side {
