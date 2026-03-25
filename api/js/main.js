@@ -184,7 +184,7 @@ function cargarProductos(){
 
                             <div class="producto-body">
                                 <div class="producto-nombre">${producto.titulo}</div>
-                                <div class="producto-talla">${producto.talla}</div>
+                                <div class="producto-talla">Talla: ${producto.talla}</div>
                                 <div class="producto-precio">$${producto.precio}</div>
 
                                 <div class="botones">
