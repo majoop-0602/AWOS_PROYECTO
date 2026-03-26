@@ -139,7 +139,24 @@ elseif (isset($_GET["modificarPedido"])) {
     echo "error";
   }
 }
+elseif(isset($_GET["agreg_pedido"])){
+  $prepare = $con->prepare("CALL AgregarPedidoReal(:id_comprador,:total,:estado, @NUEVOid_pedido, @NUEVOid_comprador, @NUEVOtotal, @NUEVOestado)");
+  $prepare->bindParam(":id_comprador", $_POST["cboComprador"]);
+  $prepare->bindParam(":total", $_POST["txtTotal"]);
+  $prepare->bindParam(":estado", $_POST["cboEstado"]);
+  $prepare->execute();
 
+  $pedidoAgregado = array();
+
+  foreach($con->query("SELECT @NUEVOid_pedido, @NUEVOid_comprador, @NUEVOtotal, @NUEVOestado;") as $pedidos){
+    $pedidoAgregado = $pedidos;
+  }
+  
+  //$id = $con->lastInsertId();
+
+  header("Content-Type: application/json");
+  echo json_encode($pedidoAgregado);
+}
 ///// PRODUCTOS
 elseif (isset($_GET["productos"])) {
   $select = $con->select("view_productos");

@@ -155,11 +155,22 @@ $.get("servicio.php?pedidosCombo", function (compradores) {
 $("#frmPedido").submit(function (e) {
     e.preventDefault()
 
-    $.post("servicio.php?modificarPedido", $(this).serialize(), function (r) {
-        if (r == "correcto") {
-            alert("Pedido modificado correctamente")
-            $("#frmPedido").get(0).reset()
-            buscarPedidos()
+    if ($("#txtId").val()){
+        $post("servicio.php?modificarPedido", $(this).serialize(), function (respuesta){
+            if(respuesta == "correcto"){
+                alert("Pedido modificado correctamente")
+                $("#frmPedido").get(0).reset()
+                buscarPedidos()
+
+            }
+        })
+        return
+    }
+    $.post("servicio.php?agreg_pedido", $(this).serialize(), function (respuesta){
+        if (Object.keys(respuesta).length){
+            alert(`Pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
+              $("#frmPedido").get(0).reset()
+              buscarPedidos()
         }
     })
 })
