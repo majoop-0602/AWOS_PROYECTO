@@ -176,10 +176,19 @@ elseif (isset($_GET["eliminarProducto"])) {
 
 }
 elseif (isset($_GET["agregarProducto"])) {
-  $prepare = $con->prepare("CALL AgregarProducto(:titulo,:descripcion,:precio,:talla,:estado,:categoria,:vendedor,:disponible, @NUEVOid_producto, @NUEVOtitulo, @NUEVOdescripcion, @NUEVOprecio, @NUEVOTalla, @NUEVOestado, @NUEVOid_categoria, @NUEVOid_vendedor, @NUEVOdisponible)");
+  $nombreImagen = "";
+
+  if(isset($_FILES["txtimagen"]) && $_FILES["txtimagen"]["error"] == 0){
+      $nombreImagen =  time() . "_" . $_FILES["txtimagen"]["name"];
+      $ruta = "images/" . $nombreImagen;
+      move_uploaded_file($_FILES["txtimagen"]["tmp_name"], $ruta);
+  }
+
+  $prepare = $con->prepare("CALL AgregarProducto(:titulo,:descripcion,:precio,:imagen,:talla,:estado,:categoria,:vendedor,:disponible, @NUEVOid_producto, @NUEVOtitulo, @NUEVOdescripcion, @NUEVOprecio, @NUEVOimagen, @NUEVOTalla, @NUEVOestado, @NUEVOid_categoria, @NUEVOid_vendedor, @NUEVOdisponible)");
   $prepare->bindParam(":titulo", $_POST["txtTitulo"]);
   $prepare->bindParam(":descripcion", $_POST["txtDescripcion"]);
   $prepare->bindParam(":precio", $_POST["txtPrecio"]);
+  $prepare->bindParam(":imagen", $ruta);
   $prepare->bindParam(":talla", $_POST["txtTalla"]);
   $prepare->bindParam(":estado", $_POST["cboEstado"]);
   $prepare->bindParam(":categoria", $_POST["cboIdCat"]);
@@ -189,7 +198,17 @@ elseif (isset($_GET["agregarProducto"])) {
 
   $productoAgregado = array();
 
-  foreach($con->query("SELECT @NUEVOid_producto, @NUEVOtitulo, @NUEVOdescripcion, @NUEVOprecio, @NUEVOTalla, @NUEVOestado, @NUEVOid_categoria, @NUEVOid_vendedor, @NUEVOdisponible;") as $productos){
+  foreach($con->query("SELECT 
+    @NUEVOid_producto, 
+    @NUEVOtitulo, 
+    @NUEVOdescripcion, 
+    @NUEVOprecio,
+    @NUEVOimagen,
+    @NUEVOTalla, 
+    @NUEVOestado, 
+    @NUEVOid_categoria, 
+    @NUEVOid_vendedor, 
+    @NUEVOdisponible") as $productos){
     $productoAgregado = $productos;
   }
    header("Content-Type: application/json");

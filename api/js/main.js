@@ -289,16 +289,24 @@ $("#frmProducto").submit(function (event) {
         })
         return
     }
+        const formData = new FormData(this);
 
-    $.post("servicio.php?agregarProducto", $(this).serialize(), function (respuesta) {
-        if (Object.keys(respuesta).length) {
-            alert(`El producto ${respuesta["@NUEVOtitulo"]} fue agregado correctamente`)
-            $("#frmProducto").get(0).reset()
-            buscarProductos()
-
-            conn.send("buscar-productos")
-        }
-    })
+                $.ajax({
+            url: "servicio.php?agregarProducto",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            dataType: "json", // 👈 IMPORTANTE
+            success: function(respuesta){
+                if (respuesta["@NUEVOtitulo"]) {
+                    alert(`El producto ${respuesta["@NUEVOtitulo"]} fue agregado correctamente`)
+                    $("#frmProducto").get(0).reset()
+                    buscarProductos()
+                    conn.send("buscar-productos")
+                }
+            }
+        })
 })
 
 $(document).on("click", ".btn-editar", function (event) {
