@@ -40,6 +40,34 @@ $con = new Conexion(array(
 
 require "firebase-php-jwt/vendor/autoload.php";
 
+$headers = getallheaders();
+
+$token = "";
+if (isset($headers["Authorization"])) {
+  $token = str_replace("Bearer ", "", $headers["Authorization"]);
+}
+
+try {
+  # el segundo parametro es la clave para codificar y decodificar el JWT
+  # debe ser una string no corta, por eso rellené de guiones
+  $decoded = Firebase\JWT\JWT::decode($token, new Firebase\JWT\Key("Test12345-----------------------------------------------", "HS256"));
+
+  # $usuario puede ser usada para validaciones
+  $usuario = explode("/", $decoded->sub);
+  $id      = $usuario[0];
+  $usr     = $usuario[1];
+  $tipo    = $usuario[2];
+
+  # $login puede ser usada para validaciones
+  $login = true;
+}
+catch (Exception $error) {
+  $usuario = array();
+  $login   = false;
+}
+$esAdmin = $login && $tipo == "1";
+
+
 if (isset($_GET["agregarUbicacion"])) {
     $usuario = $_POST["cboUsuario"];
     $calle = $_POST["txtCalle"];
