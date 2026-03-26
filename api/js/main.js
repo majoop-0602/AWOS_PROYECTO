@@ -107,7 +107,9 @@ function buscarPedidos() {
 buscarPedidos()
 
 $.get("servicio.php?pedidosCombo", function (compradores) {
-    $("#cboComprador").html("")
+    $("#cboComprador").html(`
+    <option value="" disabled selected hidden></option>
+`)
 
     for (let x in compradores) {
         const comprador = compradores[x]
@@ -188,7 +190,7 @@ function cargarProductos(){
                                 <div class="producto-precio">$${producto.precio}</div>
 
                                 <div class="botones">
-                                    <button class="btn btn-pedir" onclick="window.location.href=''">Pedir</button>
+                                    <button class="btn btn-pedir" onclick="window.location.href='pedido.html'">Pedir</button>
                                     <button class="btn btn-chat" onclick="window.location.href='ratchet.html'">Chat</button>
                                 </div>
 
@@ -322,7 +324,9 @@ function buscardetalle_pedido() {
 }
 buscardetalle_pedido()
 $.get("servicio.php?PeCombo", function (pediditos) {
-    $("#cboPedido").html("")
+    $("#cboPedido").html(`
+    <option value="" disabled selected hidden></option>
+`)
 
     for (let x in pediditos) {
         const pedidito = pediditos[x]
@@ -333,7 +337,9 @@ $.get("servicio.php?PeCombo", function (pediditos) {
     }
 })
 $.get("servicio.php?ProCombo", function (productitos) {
-    $("#cboProducto").html("")
+    $("#cboProducto").html(`
+    <option value="" disabled selected hidden></option>
+`)
 
     for (let x in productitos) {
         const productito = productitos[x]

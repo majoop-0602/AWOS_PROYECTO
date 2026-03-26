@@ -206,6 +206,16 @@ p a:hover{
     flex-direction: column;
     align-items: left;
 }
+#frmPedido{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+#frmDetalle{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 .filtros{
     display: flex;
     flex-wrap: wrap;

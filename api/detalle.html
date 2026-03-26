@@ -3,15 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Usuario</title>
+    <title>Detalle Pedido</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="js/main.js" defer></script>
-     <link href="css/style.css" rel="stylesheet"/>
-   
+    <link href="css/style.css" rel="stylesheet"/>
 </head>
 <body id="page-top">
         <nav class="navbar navbar-expand-sm"> 
@@ -19,7 +18,7 @@
                     <a class="navbar-brand fw-bold" href="#page-top">Segunda Vuelta</a>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#perfil">Perfil</a>
+                            <a class="nav-link" href="#detalle">Detalle</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="productitos.html">Home</a>
@@ -32,57 +31,57 @@
                     </ul>
                 </div>
             </nav>
-    <div id="perfil" class = "container">
-         <form id="frmUsuario" method="POST">
-        
-            <h1 class="mt-4 mb-4">Usuario</h1>
+    <div id="detalle" class="container">
+        <form id="frmDetalle" method="POST">
+            <h1 class="mt-4 mb-4">Detalle Pedido</h1>
             <div class="input2-1-box mb-3">
-                <input type="text" id="txtIdUsuario" name="txtIdUsuario"  placeholder=" "  readonly>
-                <label for="txtIdUsuario">ID</label>
+                <input type="text" id="txtid_detalle" name="txtid_detalle"  placeholder=" " readonly>
+                <label for="txtid_detalle">ID</label>
             </div>
             <div class="input2-box mb-3">
-                <input type="text" id="txtNombre" name="txtNombre" required>
-                <label for="txtNombre">Nombre</label>
+               
+                <select type="text" id="cboPedido" name="cboPedido" required>
+                    <option value="" disabled selected hidden></option>
+                </select>
+                 <label for="cboPedido">Pedido</label>
             </div>
+
              <div class="input2-box mb-3">
-                <input type="text" id="txtEmail" name="txtEmail" required>
-                <label for="txtEmail">Email</label>
+                
+                <select type="text" id="cboProducto" name="cboProducto" required>
+                    <option value="" disabled selected hidden></option>
+                </select>
+                <label for="cboProducto">Producto</label>
+            </div>
+
+            <div class="input2-box mb-3">
+                <input type="number" id="txtcantidad" name="txtcantidad" required>
+                <label for="txtcantidad">Cantidad</label>
             </div>
             <div class="input2-box mb-3">
-                <input type="number" id="txtTelefono" maxlength="10"  name="txtTelefono" required>
-                <label for="txtTelefono">Telefono</label>
-            </div>
-            <div class="input2-box mb-3">
-                <input type="text" id="txtContrasena" name="txtContrasena" required>
-                <label for="txtContrasena">Contraseña</label>
+                <input type="number" id="txtprecio_unitario" name="txtprecio_unitario" required>
+                <label for="txtprecio_unitario">Precio Unitario</label>
             </div>
             <div class="mb-1"><br>
-                <button type="button" class="btn btn-home" onclick="window.location.href='direccion.html'">Ubicación</button>
                 <button type="submit" class="btn btn-purple">Guardar</button>
                 <button type="reset" class="btn btn-purple">Cancelar</button>
             </div>
         </form>
-        <br>
-
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Telefono</th>
-                    <th>Contraseña</th>
-                    <th>Fecha Registro</th>
-                    <th>Accion</th>
+                    <th>ID Pedido</th>
+                    <th>ID Producto</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="tbodyUsuarios">
+            <tbody id="tbodyDetalle">
             </tbody>
         </table>
     </div>
-
-
-    
-
 </body>
 </html>
