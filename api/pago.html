@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pagos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="js/main.js" defer></script>
+    <link href="css/style.css" rel="stylesheet"/>
+</head>
+<body id="page-top">
+     <nav class="navbar navbar-expand-sm"> 
+                <div class="container-fluid">
+                    <a class="navbar-brand fw-bold" href="#page-top">Segunda Vuelta</a>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pago">Pago</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="productitos.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-purple" onclick="window.location.href=''">
+                                Cerrar Sesión
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+    <div id="pago" class="container">
+
+        <h1 class="mt-4 mb-4">Pago</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Producto</th>
+                    <th>Total</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyObtID"></tbody>
+        </table>
+
+        <form id="frmPagos" method="POST">
+            <div class="input2-1-box mb-3">
+                <input type="text" id="txtid" name="txtid" placeholder=" " readonly>
+                <label for="txtid">ID</label>
+            </div>
+            <div class="input2-1-box mb-3">
+                <input type="text" id="txtid_pedido" name="txtid_pedido" placeholder=" " readonly >
+                <label for="txtid_pedido">ID Pedido</label>
+            </div>
+            <div class="input2-box mb-3">
+                <input type="number" id="txtMonto" name="txtMonto" required>
+                <label for="txtMonto">Monto</label>
+            </div>
+            <div class="input2-box mb-3">
+                
+                <select type="text" id="cboEstadoPago" name="cboEstadoPago" required>
+                        <option value="" disabled selected hidden></option>
+                        <option value="Aprobado">Aprobado</option>
+                        <option value="Rechazado">Rechazado</option>
+                        <option value="Pendiente">Pendiente</option>
+                </select>
+                <label for="cboEstadoPago">Estado de Pago</label>
+            </div>
+            <div class="input2-box mb-3">
+                <input type="text" id="txtReferenciaPaypal" name="txtReferenciaPaypal" required>
+                <label for="txtReferenciaPaypal">Referencia PayPal</label>
+            </div>
+            <div class="mb-1">
+                <button type="submit" class="btn btn-purple">Guardar</button>
+                <button type="reset" class="btn btn-purple">Cancelar</button>
+            </div>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID Pedido</th>
+                    <th>Producto</th>
+                    <th>Monto</th>
+                    <th>Estado de Pago</th>
+                    <th>Fecha de Pago</th>
+                    <th>Año</th>
+                    <th>Mes</th>
+                    <th>Dia</th>
+                    <th>Referencia PayPal</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyPagos"></tbody>
+        </table>
+
+          <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Nueva Notificación</strong>
+                <small></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Un pedido ha sido pagado!
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+     
+</body>
+</html>
