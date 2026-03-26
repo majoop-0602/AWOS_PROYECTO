@@ -1,6 +1,9 @@
+const API = "https://transit-preventing-interval-officer.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+
+
 ///////PAGOS
 function buscarPagos(){
-    $.get("servicio.php?pagos", function (pagos){
+    $.get(`${API}/servicio.php?pagos`, function (pagos){
     $("#tbodyPagos").html("")
 
     for(let x in pagos){
@@ -25,7 +28,7 @@ function buscarPagos(){
 }
 
 function cargarPedidos(){
-    $.get("servicio.php?obt_id_pedido", function (cargaID){
+    $.get(`${API}/servicio.php?obt_id_pedido`, function (cargaID){
     $("#tbodyObtID").html("")
 
     for(let x in cargaID){
@@ -57,7 +60,7 @@ buscarPagos()
 $("#frmPagos").submit(function (event) {
     event.preventDefault();
 
-    $.post("servicio.php?agre_pagos", $(this).serialize(),function (respuesta) {
+    $.post(`${API}/servicio.php?agre_pagos`, $(this).serialize(),function (respuesta) {
         if (Object.keys(respuesta).length) {
             alert(`Pago del pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
             $("#frmPagos").get(0).reset()
@@ -81,7 +84,7 @@ $(document).on("click", ".btn-pagar", function (event) {
 ///////////PEDIDOS
 
 function buscarPedidos() {
-    $.get("servicio.php?pedidos", function (pedidos) {
+    $.get(`${API}/servicio.php?pedidos`, function (pedidos) {
         $("#tbodyPedidos").html("")
 
         for (let x in pedidos) {
@@ -137,7 +140,7 @@ cargarPedidosUsuario()
 
 buscarPedidos()
 
-$.get("servicio.php?pedidosCombo", function (compradores) {
+$.get(`${API}/servicio.php?pedidosCombo`, function (compradores) {
     $("#cboComprador").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -156,7 +159,7 @@ $("#frmPedido").submit(function (e) {
     e.preventDefault()
 
     if ($("#txtId").val()){
-        $.post("servicio.php?modificarPedido", $(this).serialize(), function (respuesta){
+        $.post(`${API}/servicio.php?modificarPedido`, $(this).serialize(), function (respuesta){
             if(respuesta == "correcto"){
                 alert("Pedido modificado correctamente")
                 $("#frmPedido").get(0).reset()
@@ -166,7 +169,7 @@ $("#frmPedido").submit(function (e) {
         })
         return
     }
-    $.post("servicio.php?agreg_pedido", $(this).serialize(), function (respuesta){
+    $.post(`${API}/servicio.php?agreg_pedido`, $(this).serialize(), function (respuesta){
         if (Object.keys(respuesta).length){
             alert(`Pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
               $("#frmPedido").get(0).reset()
@@ -178,7 +181,7 @@ $("#frmPedido").submit(function (e) {
 $(document).on("click", ".btn-editar", function () {
     const id = $(this).data("id")
 
-    $.get("servicio.php?editarPedido", { id }, function (pedido) {
+    $.get(`${API}/servicio.php?editarPedido`, { id }, function (pedido) {
         const p = pedido[0]
 
         $("#txtId").val(p.id_pedido)
@@ -190,7 +193,7 @@ $(document).on("click", ".btn-editar", function () {
 
 ///////////PRODUCTOS
 function buscarProductos() {
-    $.get("servicio.php?productos", function (productos) {
+    $.get(`${API}/servicio.php?productos`, function (productos) {
         $("#tbodyProductos").html("")
     
         for (let x in productos) {
@@ -218,7 +221,7 @@ function buscarProductos() {
 }
 
 function cargarProductos(){
-    $.get("servicio.php?productos", function (productos){
+    $.get(`${API}/servicio.php?productos`, function (productos){
         $("#container-productos").html("")
 
         for(let x in productos){
@@ -249,7 +252,7 @@ function cargarProductos(){
 cargarProductos()
 buscarProductos()
 
-$.get("servicio.php?categoriasCombo", function (categorias) {
+$.get(`${API}/servicio.php?categoriasCombo`, function (categorias) {
     $("#cboIdCat").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -262,7 +265,7 @@ $.get("servicio.php?categoriasCombo", function (categorias) {
         </option>`)
     }
 })
-$.get("servicio.php?vendedorCombo", function (vendedores) {
+$.get(`${API}/servicio.php?vendedorCombo`, function (vendedores) {
     $("#cboIdVendedor").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -280,7 +283,7 @@ $("#frmProducto").submit(function (event) {
     event.preventDefault()
 
     if ($("#txtId").val()) {
-        $.post("servicio.php?modificarProducto", $(this).serialize(), function (respuesta) {
+        $.post(`${API}/servicio.php?modificarProducto`, $(this).serialize(), function (respuesta) {
             if (respuesta == "correcto") {
                 alert("Producto modificado correctamente")
                 $("#frmProducto").get(0).reset()
@@ -292,7 +295,7 @@ $("#frmProducto").submit(function (event) {
         const formData = new FormData(this);
 
                 $.ajax({
-            url: "servicio.php?agregarProducto",
+            url: `${API}/servicio.php?agregarProducto`,
             type: "POST",
             data: formData,
             contentType: false,
@@ -312,7 +315,7 @@ $("#frmProducto").submit(function (event) {
 $(document).on("click", ".btn-editar", function (event) {
     const id = $(this).data("id")
 
-    $.get("servicio.php?editarProducto", {
+    $.get(`${API}/servicio.php?editarProducto`, {
         id: id
     }, function (productos) {
         const producto = productos[0]
@@ -336,7 +339,7 @@ $(document).on("click", ".btn-eliminar-producto", function (event) {
         return
     }
 
-    $.post("servicio.php?eliminarProducto", {
+    $.post(`${API}/servicio.php?eliminarProducto`, {
         txtId: id
     }, function (respuesta) {
         if (respuesta == "correcto") {
@@ -350,7 +353,7 @@ $(document).on("click", ".btn-eliminar-producto", function (event) {
 
 ///////////DETALLE_PEDIDO
 function buscardetalle_pedido() {
-    $.get("servicio.php?detalle_pedido", function (detalles){
+    $.get(`${API}/servicio.php?detalle_pedido`, function (detalles){
     $("#tbodyDetalle").html("")
 
     for(let x in detalles){
@@ -380,7 +383,7 @@ function buscardetalle_pedido() {
 
 }
 buscardetalle_pedido()
-$.get("servicio.php?PeCombo", function (pediditos) {
+$.get(`${API}/servicio.php?PeCombo`, function (pediditos) {
     $("#cboPedido").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -393,7 +396,7 @@ $.get("servicio.php?PeCombo", function (pediditos) {
         </option>`)
     }
 })
-$.get("servicio.php?ProCombo", function (productitos) {
+$.get(`${API}/servicio.php?ProCombo`, function (productitos) {
     $("#cboProducto").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -410,7 +413,7 @@ $("#frmDetalle").submit(function (event) {
     event.preventDefault()
 
     if ($("#txtid_detalle").val()) {
-        $.post("servicio.php?modificardetalle_pedido", $(this).serialize(), function (respuesta) {
+        $.post(`${API}/servicio.php?modificardetalle_pedido`, $(this).serialize(), function (respuesta) {
             if (respuesta == "correcto") {
                 alert("Detalle modificado correctamente")
                 $("#frmDetalle").get(0).reset()
@@ -420,7 +423,7 @@ $("#frmDetalle").submit(function (event) {
         return
     }
 
-    $.post("servicio.php?agregardetalle_pedido", $(this).serialize(), function (respuesta) {
+    $.post(`${API}/servicio.php?agregardetalle_pedido`, $(this).serialize(), function (respuesta) {
         if (Object.keys(respuesta).length) {
            alert(`Detalle pedido ${respuesta["@NUEVOid_detalle"]} del pedido ${respuesta["@NUEVOid_pedido"]} fue agregado correctamente`)
             $("#frmDetalle").get(0).reset()
@@ -431,7 +434,7 @@ $("#frmDetalle").submit(function (event) {
 $(document).on("click", ".btn-editar", function () {
     const id = $(this).data("id")
 
-    $.get("servicio.php?editardetalle_pedido", { id }, function (detallito) {
+    $.get(`${API}/servicio.php?editardetalle_pedido`, { id }, function (detallito) {
         const de = detallito[0]
 
         $("#txtid_detalle").val(de.id_detalle)
@@ -448,7 +451,7 @@ $(document).on("click", ".btn-eliminar-detalle", function (event) {
         return
     }
 
-    $.post("servicio.php?eliminardetalle_pedido", {
+    $.post(`${API}/servicio.php?eliminardetalle_pedido`, {
         txtid_detalle: id
     }, function (respuesta) {
         if (respuesta == "correcto") {
@@ -460,7 +463,7 @@ $(document).on("click", ".btn-eliminar-detalle", function (event) {
 
 /////////USUARIOS
 function buscarUsuarios() {
-    $.get("servicio.php?usuarios", function (usuarios) {
+    $.get(`${API}/servicio.php?usuarios`, function (usuarios) {
         $("#tbodyUsuarios").html("")
     
         for (let x in usuarios) {
@@ -490,7 +493,7 @@ $("#frmUsuario").submit(function (event) {
     event.preventDefault()
 
     if($("#txtIdUsuario").val()){
-        $.post("servicio.php?modificarusuario", $(this).serialize(),function(respuesta){
+        $.post(`${API}/servicio.php?modificarusuario`, $(this).serialize(),function(respuesta){
             if(respuesta =="correcto") {
                 alert("Usuario modificado correctamente")
                 $("#frmUsuario").get(0).reset()
@@ -499,7 +502,7 @@ $("#frmUsuario").submit(function (event) {
         })
         return
     }
-    $.post("servicio.php?agregarUsuario", $(this).serialize(), function (respuesta){
+    $.post(`${API}/servicio.php?agregarUsuario`, $(this).serialize(), function (respuesta){
         if (Object.keys(respuesta).length){
             alert(`Usuario ${respuesta["NUEVOnombre"]} fue agregado correctamente`)
             $("#frmUsuario").get(0).reset()
@@ -510,7 +513,7 @@ $("#frmUsuario").submit(function (event) {
 $(document).on("click", ".btn-editar", function () {
     const id = $(this).data("id")
 
-    $.get("servicio.php?editarusuario", { id }, function (usuario) {
+    $.get(`${API}/servicio.php?editarusuario`, { id }, function (usuario) {
         const us = usuario[0]
 
         $("#txtIdUsuario").val(us.id_usuario)
@@ -529,7 +532,7 @@ $(document).on("click", ".btn-eliminar-usuario", function (event) {
         return
     }
 
-    $.post("servicio.php?eliminarUsuario", {
+    $.post(`${API}/servicio.php?eliminarUsuario`, {
         txtIdUsuario: id
     }, function (respuesta) {
         if (respuesta == "correcto") {

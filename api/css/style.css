@@ -497,3 +497,65 @@ table tbody tr:nth-child(even){
     .mensaje.otro{
         align-self: flex-start;
     }
+    /* Fondo del modal (blur + oscuro suave) */
+.modal-backdrop.show {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+/* Caja principal */
+.modal-content {
+    border-radius: 20px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.modal-header {
+    background: linear-gradient(135deg, #4A2545, #7A3E72);
+    color: #F7EBEC;
+    border-bottom: none;
+    padding: 20px;
+}
+
+/* Título */
+.modal-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Botón cerrar */
+.btn-close {
+    filter: invert(1);
+}
+
+/* Body */
+.modal-body {
+    text-align: center;
+    padding: 25px;
+    font-size: 1rem;
+    color: #4A2545;
+}
+
+/* Footer */
+.modal-footer {
+    border-top: none;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+
+/* Botón */
+.modal-footer .btn {
+    background-color: #4A2545;
+    color: #F7EBEC;
+    border-radius: 20px;
+    padding: 8px 25px;
+    border: none;
+    transition: 0.3s;
+}
+
+.modal-footer .btn:hover {
+    background-color: #7A3E72;
+    transform: scale(1.05);
+}

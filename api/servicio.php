@@ -1,5 +1,6 @@
 <?php
 
+use Symfony\Component\Routing\Requirement\Requirement;
 
 ini_set("display_errors", 1);
 ini_set("display_startup_errors", 1);
@@ -45,6 +46,8 @@ $con = new Conexion(array(
   "usuario"    => "u760464709_24005242_usr",
   "contrasena" => "u7?Jpkt>Y*E7"
 ));
+
+require "firebase-php-jwt/vendor/autoload.php";
 
 ///// PAGOS
 if (isset($_GET ["agre_pagos"])) {

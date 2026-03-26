@@ -1,5 +1,8 @@
+const API = "https://transit-preventing-interval-officer.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+
+
 function buscarDirecciones() {
-    $.get("servicioUbicaciones.php?buscarUbicaciones", function (direcciones) {
+    $.get(`${API}/servicio.php?buscarUbicaciones`, function (direcciones) {
         $("#tbodyDirecciones").html("")
 
         for (let x in direcciones) {
@@ -28,7 +31,7 @@ function buscarDirecciones() {
 
 buscarDirecciones()
 
-$.get("servicioUbicaciones.php?usuarioCombo", function (usuarios) {
+$.get(`${API}/servicio.php?usuarioCombo`, function (usuarios) {
     $("#cboUsuario").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -47,7 +50,7 @@ $("#frmDirecciones").submit(function (event) {
     event.preventDefault()
 
     if ($("#txtid").val()) {
-        $.post("servicioUbicaciones.php?modificarDireccion", $(this).serialize(), function (respuesta) {
+        $.post(`${API}/servicio.php?modificarDireccion`, $(this).serialize(), function (respuesta) {
             if (respuesta == "correcto") {
                 alert("Direccion modificado correctamente")
                  window.location.href = "index.html"
@@ -56,7 +59,7 @@ $("#frmDirecciones").submit(function (event) {
         return
     }
 
-    $.post("servicioUbicaciones.php?agregarUbicacion", $(this).serialize(), function (respuesta) {
+    $.post(`${API}/servicio.php?agregarUbicacion`, $(this).serialize(), function (respuesta) {
         if (respuesta != "0") {
             alert("Direccion agregado correctamente")
             window.location.href = "index.html"
@@ -67,7 +70,7 @@ $("#frmDirecciones").submit(function (event) {
 $(document).on("click", ".btn-editar", function (event) {
     const id = $(this).data("id")
 
-    $.get("servicioUbicaciones.php?editarDireccion", {
+    $.get(`${API}/servicio.php?editarDireccion`, {
         id: id
     }, function (direcciones) {
         const dire = direcciones[0]
