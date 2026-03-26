@@ -216,6 +216,11 @@ p a:hover{
     flex-direction: column;
     align-items: left;
 }
+#frmProducto{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 .filtros{
     display: flex;
     flex-wrap: wrap;
@@ -385,6 +390,21 @@ textarea{
     font-size: 12px;
 
 }
+
+.file-label{
+    display: block;
+    padding: 12px;
+    border: 2px dashed #4A2545;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #4A2545;
+    transition: 0.3s;
+}
+
+.file-label:hover{
+    background-color: #F7EBEC;
+}
 table{
     width: 100%;
     border: 1px solid #4A2545;
@@ -418,6 +438,12 @@ table td{
 }
 table tbody tr:nth-child(even){
     background-color: #F7EBEC ;
+}
+.img-tabla{
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
 }
 /*chat*/
 .chat-side {

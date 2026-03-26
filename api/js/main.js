@@ -159,6 +159,9 @@ function buscarProductos() {
                 <td>${producto.titulo}</td>
                 <td>${producto.descripcion}</td>
                 <td>${producto.precio}</td>
+                <td>
+                    <img src="${producto.imagen}" class="img-tabla">
+                </td>
                 <td>${producto.talla}</td>
                 <td>${producto.estado}</td>
                 <td>${producto.id_categoria}</td>
@@ -205,7 +208,9 @@ cargarProductos()
 buscarProductos()
 
 $.get("servicio.php?categoriasCombo", function (categorias) {
-    $("#cboIdCat").html("")
+    $("#cboIdCat").html(`
+    <option value="" disabled selected hidden></option>
+`)
 
     for (let x in categorias) {
         const categoria = categorias[x]
@@ -216,7 +221,9 @@ $.get("servicio.php?categoriasCombo", function (categorias) {
     }
 })
 $.get("servicio.php?vendedorCombo", function (vendedores) {
-    $("#cboIdVendedor").html("")
+    $("#cboIdVendedor").html(`
+    <option value="" disabled selected hidden></option>
+`)
 
     for (let x in vendedores) {
         const vendedor = vendedores[x]
