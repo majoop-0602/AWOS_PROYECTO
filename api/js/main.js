@@ -1,4 +1,4 @@
-const API = "https://transit-preventing-interval-officer.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://archive-drinking-wear-specialties.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 
 if (!localStorage.getItem("jwt")) {

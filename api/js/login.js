@@ -1,4 +1,4 @@
-const API = "https://permalink-delete-marcus-disciplinary.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://archive-drinking-wear-specialties.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 $.ajaxSetup({
     headers: {
@@ -6,22 +6,19 @@ $.ajaxSetup({
     }
 })
 
-const modalErrorLogin = new bootstrap.Modal("#exampleModal", {
+const modalErrorLogin = new bootstrap.Modal("#exampleModal",{
     keyboard: false
 })
 
+$.get(`${API}/servicioInicioSesion.php?sesion`, function(sesion){
+        if (sesion.length){
+             
+            return
+        }
 
-// Endpoint combinado con la API para comprobar si se inició sesión
-$.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
-    if (sesion.length) {
-        // Si inició sesión
 
-        return
-    }
-
-    // Si no inició sesión
-    // Podrías añadir un redireccionamiento si lo crees prudente
 })
+
 
 $("#frmlogin").submit(function (event) {
     event.preventDefault()
@@ -34,10 +31,13 @@ $("#frmlogin").submit(function (event) {
 
         localStorage.setItem("jwt", respuesta)
 
-        
+      
+
         $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
 
-                    const rol = parseInt(sesion[2])
+            const rol = parseInt(sesion[2])
+
+           
 
             if (rol === 1) {
                 window.location = "index_admin.html"

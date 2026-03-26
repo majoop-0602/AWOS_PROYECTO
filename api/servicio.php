@@ -79,6 +79,7 @@ $esAdmin = $login && $tipo == "1";
 # en cada endpoint podemos hacer uso de la variable login para seguridad
 # tenemos la variable login y usuario para realizar más validaciones
 
+
 ///// PAGOS
 if (isset($_GET ["agre_pagos"]) && $login) {
 
