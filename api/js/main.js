@@ -156,7 +156,7 @@ $("#frmPedido").submit(function (e) {
     e.preventDefault()
 
     if ($("#txtId").val()){
-        $post("servicio.php?modificarPedido", $(this).serialize(), function (respuesta){
+        $.post("servicio.php?modificarPedido", $(this).serialize(), function (respuesta){
             if(respuesta == "correcto"){
                 alert("Pedido modificado correctamente")
                 $("#frmPedido").get(0).reset()
@@ -485,7 +485,7 @@ $("#frmUsuario").submit(function (event) {
         $.post("servicio.php?modificarusuario", $(this).serialize(),function(respuesta){
             if(respuesta =="correcto") {
                 alert("Usuario modificado correctamente")
-                $("#frmUsuario").get(0).rest()
+                $("#frmUsuario").get(0).reset()
                  buscarUsuarios()
             }
         })
@@ -494,7 +494,7 @@ $("#frmUsuario").submit(function (event) {
     $.post("servicio.php?agregarUsuario", $(this).serialize(), function (respuesta){
         if (Object.keys(respuesta).length){
             alert(`Usuario ${respuesta["NUEVOnombre"]} fue agregado correctamente`)
-            $("#frmUsuario").get(0).rest()
+            $("#frmUsuario").get(0).reset()
             buscarUsuarios()
         }
     })
