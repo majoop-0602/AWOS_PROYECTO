@@ -1,6 +1,47 @@
 const API = "https://transit-preventing-interval-officer.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 
+if (!localStorage.getItem("jwt")) {
+    window.location = "login.html"
+}
+
+
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        const token = localStorage.getItem("jwt")
+
+        if (token) {
+            xhr.setRequestHeader("Authorization", "Bearer " + token)
+        }
+    }
+})
+const tipo = localStorage.getItem("tipo")
+
+if (tipo == "1") {
+  
+    buscarPagos()
+    cargarPedidos()
+    buscarPedidos()
+    buscarProductos()
+    buscardetalle_pedido()
+    buscarUsuarios()
+    cargarProductos() // también puede ver cards
+
+} else {
+    
+
+    cargarProductos() 
+    cargarPedidos()
+
+ 
+}
+
+$("#btnCerrarSesion").click(function () {
+    localStorage.removeItem("jwt")
+    localStorage.removeItem("tipo")
+    window.location = "login.html"
+})
+
 ///////PAGOS
 function buscarPagos(){
     $.get(`${API}/servicio.php?pagos`, function (pagos){
@@ -53,8 +94,8 @@ function cargarPedidos(){
 
 
 
-cargarPedidos()
-buscarPagos()
+
+
 
 
 $("#frmPagos").submit(function (event) {
@@ -106,39 +147,8 @@ function buscarPedidos() {
         }
     })
 }
-/* FALTAR CAMBIAR EL SERVICIO Y LOS DATOS
-  function cargarPedidosUsuario(){
-    $.get("servicio.php?", function (pedidop){
-        $("#container-pedidos").html("")
 
-        for(let x in pedidop){
-            const pedido = pedidop[x]
 
-            $("#container-pedidos").append(`
-                <div class="col-md-4 mb-4">
-                    <div class="producto-card">
-                            <img src="${producto.imagen}" alt="${producto.titulo}" class="producto-img">
-
-                            <div class="producto-body">
-                                <div class="producto-nombre">${producto.titulo}</div>
-                                <div class="producto-talla">Talla: ${producto.talla}</div>
-                                <div class="producto-precio">$${producto.precio}</div>
-
-                                <div class="botones">
-                                    <button class="btn btn-pedir" onclick="window.location.href='pago.html'">Pagar</button>
-                                </div>
-
-                            </div>
-                    </div>
-                </div>
-            `)
-        }
-    })
-}
-cargarPedidosUsuario()
-*/
-
-buscarPedidos()
 
 $.get(`${API}/servicio.php?pedidosCombo`, function (compradores) {
     $("#cboComprador").html(`
@@ -249,8 +259,8 @@ function cargarProductos(){
         }
     })
 }
-cargarProductos()
-buscarProductos()
+
+
 
 $.get(`${API}/servicio.php?categoriasCombo`, function (categorias) {
     $("#cboIdCat").html(`
@@ -382,7 +392,7 @@ function buscardetalle_pedido() {
     })
 
 }
-buscardetalle_pedido()
+
 $.get(`${API}/servicio.php?PeCombo`, function (pediditos) {
     $("#cboPedido").html(`
     <option value="" disabled selected hidden></option>
@@ -487,7 +497,7 @@ function buscarUsuarios() {
     })
 }
 
-buscarUsuarios()
+
 
 $("#frmUsuario").submit(function (event) {
     event.preventDefault()
