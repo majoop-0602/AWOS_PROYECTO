@@ -103,6 +103,37 @@ function buscarPedidos() {
         }
     })
 }
+/* FALTAR CAMBIAR EL SERVICIO Y LOS DATOS
+  function cargarPedidosUsuario(){
+    $.get("servicio.php?", function (pedidop){
+        $("#container-pedidos").html("")
+
+        for(let x in pedidop){
+            const pedido = pedidop[x]
+
+            $("#container-pedidos").append(`
+                <div class="col-md-4 mb-4">
+                    <div class="producto-card">
+                            <img src="${producto.imagen}" alt="${producto.titulo}" class="producto-img">
+
+                            <div class="producto-body">
+                                <div class="producto-nombre">${producto.titulo}</div>
+                                <div class="producto-talla">Talla: ${producto.talla}</div>
+                                <div class="producto-precio">$${producto.precio}</div>
+
+                                <div class="botones">
+                                    <button class="btn btn-pedir" onclick="window.location.href='pago.html'">Pagar</button>
+                                </div>
+
+                            </div>
+                    </div>
+                </div>
+            `)
+        }
+    })
+}
+cargarPedidosUsuario()
+*/
 
 buscarPedidos()
 
@@ -423,7 +454,10 @@ function buscarUsuarios() {
                 <td>${usuario.telefono}</td>
                 <td>${usuario.contrasena}</td>
                 <td>${usuario.fecha_registro}</td>
-                <td>              
+                <td>    
+                    <button class="btn btn-info btn-editar" data-id="${usuario.id_usuario}">
+                        Modificar
+                    </button>          
                     <button class="btn btn-danger btn-eliminar-usuario" data-id="${usuario.id_usuario}">Eliminar</button>
                 </td>
             </tr>`)
@@ -436,14 +470,38 @@ buscarUsuarios()
 $("#frmUsuario").submit(function (event) {
     event.preventDefault()
 
-    $.post("servicio.php?agregarUsuario", $(this).serialize(), function (respuesta) {
-        if (Object.keys(respuesta).length) {
-            alert(`Usuario ${respuesta["@NUEVOnombre"]} fue agregado correctamente`)
-            $("#frmUsuario").get(0).reset()
+    if($("#txtIdUsuario").val()){
+        $.post("servicio.php?modificarusuario", $(this).serialize(),function(respuesta){
+            if(respuesta =="correcto") {
+                alert("Usuario modificado correctamente")
+                $("#frmUsuario").get(0).rest()
+                 buscarUsuarios()
+            }
+        })
+        return
+    }
+    $.post("servicio.php?agregarUsuario", $(this).serialize(), function (respuesta){
+        if (Object.keys(respuesta).length){
+            alert(`Usuario ${respuesta["NUEVOnombre"]} fue agregado correctamente`)
+            $("#frmUsuario").get(0).rest()
             buscarUsuarios()
         }
     })
 })
+$(document).on("click", ".btn-editar", function () {
+    const id = $(this).data("id")
+
+    $.get("servicio.php?editarusuario", { id }, function (usuario) {
+        const us = usuario[0]
+
+        $("#txtIdUsuario").val(us.id_usuario)
+        $("#txtNombre").val(us.nombre)
+        $("#txtEmail").val(us.email)
+        $("#txtTelefono").val(us.telefono)
+        $("#txtContrasena").val(us.contrasena)
+    })
+})
+
 
 $(document).on("click", ".btn-eliminar-usuario", function (event) {
     const id = $(this).data("id")

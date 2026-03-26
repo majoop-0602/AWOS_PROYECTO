@@ -321,6 +321,31 @@ elseif (isset($_GET["eliminardetalle_pedido"])) {
 
 
 /////USUARIOS
+elseif (isset($_GET["editarusuario"])){
+  $select = $con->select("usuarios", "*");
+  $select->where("id_usuario", "=", $_GET["id"]);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+
+}
+elseif (isset($_GET["modificarusuario"])){
+  $prepare = $con->prepare("CALL ModificarUsuarioReal(:id_usuario,:nombre,:email,:telefono,:contrasena)");
+  $prepare->bindParam(":id_usuario", $_POST["txtIdUsuario"]);
+  $prepare->bindParam(":nombre", $_POST["txtNombre"]);
+  $prepare->bindParam(":email", $_POST["txtEmail"]);
+  $prepare->bindParam(":telefono", $_POST["txtTelefono"]);
+  $prepare->bindParam(":contrasena", $_POST["txtContrasena"]);
+  $prepare->execute();
+
+  if($prepare->execute()) {
+    echo "correcto";
+  }
+  else {
+    echo "error";
+  }
+
+}
 elseif (isset($_GET["usuarios"])) {
   $select = $con->select("view_usuarios");
   $select->orderby("id_usuario DESC");
