@@ -201,6 +201,11 @@ p a:hover{
     flex-direction: column;
     align-items: left;
 }
+#frmDirecciones{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
 .filtros{
     display: flex;
     flex-wrap: wrap;
@@ -285,7 +290,17 @@ textarea{
     font-size: 12px;
 }
 .input2-box input,
-.input2-box textarea{
+.input2-box textarea,
+.input2-box select{
+    width: 100%;
+    padding: 13px 13px;
+    border: 1px solid #4A2545 ;
+    outline: none;
+    border-radius: 8px;
+    
+    
+}
+.input2-1-box input{
     width: 100%;
     padding: 13px 13px;
     border: 1px solid #4A2545 ;
@@ -298,6 +313,10 @@ textarea{
     position: relative;
     width: 100%;
 }
+.input2-1-box{
+    position: relative;
+    width: 100%;
+}
 .input2-box label{
     position: absolute;
     top: 15px;
@@ -306,6 +325,25 @@ textarea{
     transition: .3s;
    
     
+}
+.input2-1-box label{
+    position: absolute;
+    top: 15px;
+    left: 13px;
+    color: #4A2545;
+    transition: .3s;
+   
+    
+}
+.input2-1-box input:focus + label,
+.input2-1-box input:not(:placeholder-shown) + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+
 }
 .input2-box input:focus + label,
 .input2-box input:valid + label{
@@ -319,6 +357,16 @@ textarea{
 }
 .input2-box textarea:focus + label,
 .input2-box textarea:valid + label{
+    top: -9px;
+    color: #F7EBEC;
+    background-color: #4A2545;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-size: 12px;
+
+}
+.input2-box select:focus + label,
+.input2-box select:valid + label{
     top: -9px;
     color: #F7EBEC;
     background-color: #4A2545;
