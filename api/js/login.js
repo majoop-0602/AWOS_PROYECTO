@@ -1,4 +1,4 @@
-const API = "https://archive-drinking-wear-specialties.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://modeling-such-doctors-benjamin.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 $.ajaxSetup({
     headers: {

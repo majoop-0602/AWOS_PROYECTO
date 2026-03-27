@@ -1,4 +1,4 @@
-const API = "https://archive-drinking-wear-specialties.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://modeling-such-doctors-benjamin.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 
 if (!localStorage.getItem("jwt")) {
@@ -20,7 +20,6 @@ const tipo = localStorage.getItem("tipo")
 if (tipo == "1") {
   
     buscarPagos()
-    cargarPedidos()
     buscarPedidos()
     buscarProductos()
     buscardetalle_pedido()
