@@ -38,6 +38,29 @@ $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
 
 })
 
+
+$("#linkHome").click(function (e) {
+    e.preventDefault()
+
+    $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
+
+        if (!sesion.length) {
+            window.location = "login.html"
+            return
+        }
+
+        const tipo = sesion[2]
+
+        if (tipo == "1") {
+            window.location = "index_admin.html"
+        } else {
+            window.location = "productitos.html"
+        }
+
+    })
+})
+
+
 $("#btnCerrarSesion").click(function () {
     localStorage.removeItem("jwt")
     localStorage.removeItem("tipo")
