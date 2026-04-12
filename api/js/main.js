@@ -1,4 +1,4 @@
-const API = "https://healing-processors-idle-axis.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://checked-enquiries-helping-evidence.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 
 const pagina = window.location.pathname
@@ -231,7 +231,7 @@ function buscarProductos() {
 }
 
 function cargarProductos(){
-    $.get(`${API}/servicio.php?productos`, function (productos){
+    $.get(`${API}/servicio.php?productosDisponibles`, function (productos){
         $("#container-productos").html("")
 
         for(let x in productos){
@@ -245,6 +245,7 @@ function cargarProductos(){
                             <div class="producto-body">
                                 <div class="producto-nombre">${producto.titulo}</div>
                                 <div class="producto-talla">Talla: ${producto.talla}</div>
+                                <div class="producto-talla">${producto.descripcion}</div>
                                 <div class="producto-precio">$${producto.precio}</div>
 
                                 <div class="botones">

@@ -292,8 +292,20 @@ p a:hover{
     border-radius: 8px;
     border: none;
 }
+.btn-pedir:hover{
+    background-color: #6B3A5B;
+    color: #F7EBEC;
+    border-radius: 8px;
+    border: none;
+}
 .btn-chat{
     background-color: #824C71;
+    color: #F7EBEC;
+    border-radius: 8px;
+    border: none;
+}
+.btn-chat:hover{
+    background-color: #6B3A5B;
     color: #F7EBEC;
     border-radius: 8px;
     border: none;

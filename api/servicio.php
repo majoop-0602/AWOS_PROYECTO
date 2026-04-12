@@ -205,6 +205,15 @@ elseif (isset($_GET["productos"]) && $login) {
   header("Content-Type: application/json");
   echo json_encode($select->execute());
 }
+elseif (isset($_GET["productosDisponibles"]) && $login) {
+  $select = $con->select("view_productos");
+  $select->where("disponible", "=", "1");
+  $select->orderby("id DESC");
+  $select->limit(10);
+
+  header("Content-Type: application/json");
+  echo json_encode($select->execute());
+}
 elseif (isset($_GET["eliminarProducto"])&& $esAdmin) {
   $prepare = $con->prepare("CALL EliminarProducto(:idProducto)");
     $prepare->bindParam(":idProducto", $_POST["txtId"]);
