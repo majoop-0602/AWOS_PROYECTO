@@ -3,7 +3,9 @@ const API = "https://checked-enquiries-helping-evidence.trycloudflare.com/AWOS_P
 
 const pagina = window.location.pathname
 
-if (!localStorage.getItem("jwt") && !pagina.includes("index.html")) {
+const esPublica = pagina.includes("index.html") || pagina === "/" || pagina.includes("login.html")
+
+if (!localStorage.getItem("jwt") && !esPublica) {
     window.location = "login.html"
 }
 
@@ -16,25 +18,31 @@ $.ajaxSetup({
         }
     }
 })
-const tipo = localStorage.getItem("tipo")
 
-if (tipo == "1") {
-  
-    buscarPagos()
-    buscarPedidos()
-    buscarProductos()
-    buscardetalle_pedido()
-    buscarUsuarios()
-    cargarProductos() // también puede ver cards
+$.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
 
-} else {
-    
+    if (!sesion.length) {
+        window.location = "login.html"
+        return
+    }
 
-    cargarProductos() 
-    cargarPedidos()
+    const tipo = sesion[2] 
 
- 
-}
+    if (tipo == "1") {
+        // ADMIN
+        buscarPagos()
+        buscarPedidos()
+        buscarProductos()
+        buscardetalle_pedido()
+        buscarUsuarios()
+        cargarProductos()
+    } else {
+        // USUARIO NORMAL
+        cargarProductos()
+        cargarPedidos()
+    }
+
+})
 
 $("#btnCerrarSesion").click(function () {
     localStorage.removeItem("jwt")

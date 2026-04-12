@@ -31,6 +31,12 @@ $("#frmlogin").submit(function (event) {
 
         localStorage.setItem("jwt", respuesta)
 
+        // decodificar JWT
+        const payload = JSON.parse(atob(respuesta.split('.')[1]))
+        const tipo = payload.sub.split("/")[2]
+
+        localStorage.setItem("tipo", tipo)
+
         $.ajaxSetup({
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("jwt")}`
