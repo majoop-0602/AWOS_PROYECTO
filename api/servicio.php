@@ -1,5 +1,6 @@
 <?php
 
+
 use Symfony\Component\Routing\Requirement\Requirement;
 
 ini_set("display_errors", 1);
@@ -49,7 +50,13 @@ $con = new Conexion(array(
 
 require "firebase-php-jwt/vendor/autoload.php";
 
-$headers = getallheaders();
+$headers = function_exists('getallheaders') ? getallheaders() : [];
+
+if (!isset($headers["Authorization"])) {
+    if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
+        $headers["Authorization"] = $_SERVER["HTTP_AUTHORIZATION"];
+    }
+}
 
 $token = "";
 if (isset($headers["Authorization"])) {

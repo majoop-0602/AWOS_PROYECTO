@@ -28,16 +28,12 @@ $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
     const tipo = sesion[2] 
 
     if (tipo == "1") {
-        // ADMIN
         buscarDirecciones()
-        generarMapa(longitud, latitud)
-    } else {
-        // USUARIO NORMAL
-        generarMapa(longitud, latitud)
     }
 
-})
+    navigator.geolocation.getCurrentPosition(success, error, options)
 
+})
 
 $("#linkHome").click(function (e) {
     e.preventDefault()
@@ -68,7 +64,7 @@ $("#btnCerrarSesion").click(function () {
 })
 
 function buscarDirecciones() {
-    $.get(`${API}/servicio.php?buscarUbicaciones`, function (direcciones) {
+    $.get(`${API}/servicioUbicaciones.php?buscarUbicaciones`, function (direcciones) {
         $("#tbodyDirecciones").html("")
 
         for (let x in direcciones) {
@@ -97,7 +93,7 @@ function buscarDirecciones() {
 
 
 
-$.get(`${API}/servicio.php?usuarioCombo`, function (usuarios) {
+$.get(`${API}/servicioUbicaciones.php?usuarioCombo`, function (usuarios) {
     $("#cboUsuario").html(`
     <option value="" disabled selected hidden></option>
 `)
@@ -116,19 +112,35 @@ $("#frmDirecciones").submit(function (event) {
     event.preventDefault()
 
     if ($("#txtid").val()) {
-        $.post(`${API}/servicio.php?modificarDireccion`, $(this).serialize(), function (respuesta) {
+        $.post(`${API}/servicioUbicaciones.php?modificarDireccion`, $(this).serialize(), function (respuesta) {
             if (respuesta == "correcto") {
                 alert("Direccion modificado correctamente")
-                 window.location.href = "index.html"
+                 $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
+                    const tipo = sesion[2]
+
+                    if (tipo == "1") {
+                        window.location = "index_admin.html"
+                    } else {
+                        window.location = "productitos.html"
+                    }
+                })
             }
         })
         return
     }
 
-    $.post(`${API}/servicio.php?agregarUbicacion`, $(this).serialize(), function (respuesta) {
+    $.post(`${API}/servicioUbicaciones.php?agregarUbicacion`, $(this).serialize(), function (respuesta) {
         if (respuesta != "0") {
             alert("Direccion agregado correctamente")
-            window.location.href = "index.html"
+            $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
+                const tipo = sesion[2]
+
+                if (tipo == "1") {
+                    window.location = "index_admin.html"
+                } else {
+                    window.location = "productitos.html"
+                }
+            })
         }
     })
 })
@@ -136,7 +148,7 @@ $("#frmDirecciones").submit(function (event) {
 $(document).on("click", ".btn-editar", function (event) {
     const id = $(this).data("id")
 
-    $.get(`${API}/servicio.php?editarDireccion`, {
+    $.get(`${API}/servicioUbicaciones.php?editarDireccion`, {
         id: id
     }, function (direcciones) {
         const dire = direcciones[0]
@@ -154,8 +166,7 @@ $(document).on("click", ".btn-editar", function (event) {
 })
 
 //generarMapa(longitud, latitud)
-
- function generarMapa(longitud, latitud) {
+function generarMapa(latitud, longitud) {
                 $("#divMapa iframe").remove() 
                 $("#divMapa").append(`
                     <iframe 
@@ -178,11 +189,13 @@ $(document).on("click", ".btn-editar", function (event) {
 
             function success(pos) {
                 const crd = pos.coords
-                generarMapa(crd.longitude, crd.latitude)
-            }
+                generarMapa(crd.latitude, crd.longitude)
+}
 
             function error(err) {
                 console.warn(`ERROR(${err.code}): ${err.message}`)
             }
+
+            
 
 
