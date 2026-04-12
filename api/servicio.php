@@ -116,10 +116,11 @@ elseif (isset($_GET ["pagos"])&& $esAdmin) {
  
 }
 
-elseif (isset($_GET ["obt_id_pedido"])&& $esAdmin) {
+elseif (isset($_GET ["obt_id_pedido"])&& $login) {
 
   $select = $con->select("view_obt_id_pedido");
-   $select->orderby("id_pedido","DESC");
+  $select->where("estado", "<>", "Pagado");
+  $select->orderby("id_pedido","DESC");
   $select->limit(10);
 
   header("Content-Type: application/json");

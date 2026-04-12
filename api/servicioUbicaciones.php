@@ -68,7 +68,7 @@ catch (Exception $error) {
 $esAdmin = $login && $tipo == "1";
 
 
-if (isset($_GET["agregarUbicacion"])) {
+if (isset($_GET["agregarUbicacion"])&& $login) {
     $usuario = $_POST["cboUsuario"];
     $calle = $_POST["txtCalle"];
     $ciudad = $_POST["txtCiudad"];
@@ -91,7 +91,7 @@ if (isset($_GET["agregarUbicacion"])) {
 
     echo $con->lastInsertId();
 }
-elseif (isset($_GET["usuarioCombo"])) {
+elseif (isset($_GET["usuarioCombo"])&& $login) {
     $select = $con->select("usuarios", "id_usuario AS value, nombre AS label");
     $select->orderby("nombre ASC");
     $select->limit(10);
@@ -111,7 +111,7 @@ elseif (isset($_GET["usuarioCombo"])) {
     echo json_encode($array);
 }
 
-elseif (isset($_GET["buscarUbicaciones"])) {
+elseif (isset($_GET["buscarUbicaciones"]) && $esAdmin) {
      $select = $con->select("direcciones","id_direccion, usuarios.nombre AS usuario, calle, ciudad, 
   estado, codigo_postal, descripcion, latitud, longitud");
   $select->innerjoin("usuarios USING (id_usuario)");
@@ -121,7 +121,7 @@ elseif (isset($_GET["buscarUbicaciones"])) {
   header("Content-Type: application/json");
   echo json_encode($select->execute());
 }
-elseif (isset($_GET["editarDireccion"])) {
+elseif (isset($_GET["editarDireccion"]) && $esAdmin) {
   $select = $con->select("direcciones", "*");
   $select->where("id_direccion", "=", $_GET["id"]);
 
@@ -130,7 +130,7 @@ elseif (isset($_GET["editarDireccion"])) {
 }
 
 
-elseif (isset($_GET["modificarDireccion"])) {
+elseif (isset($_GET["modificarDireccion"]) && $esAdmin) {
   $update = $con->update("direcciones");
   $update->set("calle", $_POST["txtCalle"]);
   $update->set("ciudad", $_POST["txtCiudad"]);
@@ -144,13 +144,5 @@ elseif (isset($_GET["modificarDireccion"])) {
   echo $update->execute() ? "correcto" : "error";
 }
 
-elseif (isset($_GET["obtenerUltimaUbicacion"])) {
-    $select = $con->select("direcciones", "latitud, longitud");
-    $select->orderBy("id_direccion", "DESC");
-    $select->limit(1);
-
-    header("Content-Type: application/json");
-    echo json_encode($select->execute());
-}
 
 ?>
