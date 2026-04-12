@@ -1,10 +1,11 @@
-const API = "https://modeling-such-doctors-benjamin.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://healing-processors-idle-axis.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 
-if (!localStorage.getItem("jwt")) {
+const pagina = window.location.pathname
+
+if (!localStorage.getItem("jwt") && !pagina.includes("index.html")) {
     window.location = "login.html"
 }
-
 
 $.ajaxSetup({
     beforeSend: function (xhr) {
@@ -38,7 +39,7 @@ if (tipo == "1") {
 $("#btnCerrarSesion").click(function () {
     localStorage.removeItem("jwt")
     localStorage.removeItem("tipo")
-    window.location = "login.html"
+    window.location = "index.html"
 })
 
 ///////PAGOS

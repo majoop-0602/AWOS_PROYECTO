@@ -1,4 +1,4 @@
-const API = "https://modeling-such-doctors-benjamin.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://healing-processors-idle-axis.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 $.ajaxSetup({
     headers: {
@@ -30,6 +30,12 @@ $("#frmlogin").submit(function (event) {
         }
 
         localStorage.setItem("jwt", respuesta)
+        
+        $.ajaxSetup({
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("jwt")}`
+            }
+        })
 
       
 
