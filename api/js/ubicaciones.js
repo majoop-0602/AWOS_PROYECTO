@@ -1,5 +1,48 @@
 const API = "https://checked-enquiries-helping-evidence.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
+const pagina = window.location.pathname
+
+const esPublica = pagina.includes("index.html") || pagina === "/" || pagina.includes("login.html")
+
+if (!localStorage.getItem("jwt") && !esPublica) {
+    window.location = "login.html"
+}
+
+$.ajaxSetup({
+    beforeSend: function (xhr) {
+        const token = localStorage.getItem("jwt")
+
+        if (token) {
+            xhr.setRequestHeader("Authorization", "Bearer " + token)
+        }
+    }
+})
+
+$.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
+
+    if (!sesion.length) {
+        window.location = "login.html"
+        return
+    }
+
+    const tipo = sesion[2] 
+
+    if (tipo == "1") {
+        // ADMIN
+        buscarDirecciones()
+        generarMapa(longitud, latitud)
+    } else {
+        // USUARIO NORMAL
+        generarMapa(longitud, latitud)
+    }
+
+})
+
+$("#btnCerrarSesion").click(function () {
+    localStorage.removeItem("jwt")
+    localStorage.removeItem("tipo")
+    window.location = "index.html"
+})
 
 function buscarDirecciones() {
     $.get(`${API}/servicio.php?buscarUbicaciones`, function (direcciones) {
@@ -29,7 +72,7 @@ function buscarDirecciones() {
     })
 }
 
-buscarDirecciones()
+
 
 $.get(`${API}/servicio.php?usuarioCombo`, function (usuarios) {
     $("#cboUsuario").html(`
@@ -119,4 +162,4 @@ $(document).on("click", ".btn-editar", function (event) {
                 console.warn(`ERROR(${err.code}): ${err.message}`)
             }
 
-generarMapa(longitud, latitud)
+
