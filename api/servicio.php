@@ -123,17 +123,30 @@ elseif (isset($_GET ["pagos"])&& $esAdmin) {
  
 }
 
-elseif (isset($_GET ["obt_id_pedido"])&& $login) {
+elseif (isset($_GET ["obt_id_pedido"]) && $login) {
 
   $select = $con->select("view_obt_id_pedido");
-  $select->where("estado", "<>", "Pagado");
+
+  // si es admin, muestra todos los pedidos que no estén pagados
+  if ($esAdmin) {
+
+    $select->where("estado", "<>", "Pagado");
+
+  } 
+  // si es usuario normal, muestra solo sus pedidos que no estén pagados
+  else {
+
+    $select->where("WHERE estado", "<>", "Pagado");
+    $select->where("AND id_usuario", "=", $id);
+
+  }
+
   $select->orderby("id_pedido","DESC");
   $select->limit(10);
 
   header("Content-Type: application/json");
   echo json_encode($select->execute());
 }
-
 ///// PEDIDOS
 elseif (isset($_GET["pedidos"])&& $esAdmin) {
   $select = $con->select("view_pedidos");

@@ -1,4 +1,4 @@
-const API = "https://units-corpus-air-optical.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
+const API = "https://accepting-johns-diffs-mod.trycloudflare.com/AWOS_PROYECTO/Github/AWOS_PROYECTO/api"
 
 
 const pagina = window.location.pathname
