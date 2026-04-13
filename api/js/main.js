@@ -41,6 +41,7 @@ $.get(`${API}/servicioInicioSesion.php?sesion`, function (sesion) {
         // USUARIO NORMAL
         cargarProductos()
         cargarPedidos()
+        cargarMiPerfil()
     }
 
 })
@@ -565,6 +566,17 @@ $(document).on("click", ".btn-editar", function () {
     })
 })
 
+function cargarMiPerfil() {
+    $.get(`${API}/servicio.php?editarusuario`, function (usuario) {
+        const us = usuario[0]
+
+        $("#txtIdUsuario").val(us.id_usuario)
+        $("#txtNombre").val(us.nombre)
+        $("#txtEmail").val(us.email)
+        $("#txtTelefono").val(us.telefono)
+        $("#txtContrasena").val(us.contrasena)
+    })
+}
 
 $(document).on("click", ".btn-eliminar-usuario", function (event) {
     const id = $(this).data("id")

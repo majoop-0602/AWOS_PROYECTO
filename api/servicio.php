@@ -413,17 +413,35 @@ elseif (isset($_GET["eliminardetalle_pedido"])&& $esAdmin) {
 
 
 /////USUARIOS
-elseif (isset($_GET["editarusuario"])&& $esAdmin){
+elseif (isset($_GET["editarusuario"])&& $login){
+  // usuario normal → ignora el ID y usa el suyo
+  if (!$esAdmin) {
+    $id_buscar = $id;
+  } else {
+    $id_buscar = $_GET["id"];
+  }
+
   $select = $con->select("usuarios", "*");
-  $select->where("id_usuario", "=", $_GET["id"]);
+  $select->where("id_usuario", "=", $id_buscar);
 
   header("Content-Type: application/json");
   echo json_encode($select->execute());
 
 }
-elseif (isset($_GET["modificarusuario"])&& $esAdmin){
+elseif (isset($_GET["modificarusuario"])&& $login){
+
+  // administrador → puede modificar cualquier usuario, por eso usa el ID enviado desde el formulario
+    if ($esAdmin) {
+      $id_usuario = $_POST["txtIdUsuario"];
+    } 
+    // usuario normal → usa el ID del token
+    else {
+      $id_usuario = $id;
+    }
+
+
   $prepare = $con->prepare("CALL ModificarUsuarioReal(:id_usuario,:nombre,:email,:telefono,:contrasena)");
-  $prepare->bindParam(":id_usuario", $_POST["txtIdUsuario"]);
+  $prepare->bindParam(":id_usuario", $id_usuario);
   $prepare->bindParam(":nombre", $_POST["txtNombre"]);
   $prepare->bindParam(":email", $_POST["txtEmail"]);
   $prepare->bindParam(":telefono", $_POST["txtTelefono"]);
